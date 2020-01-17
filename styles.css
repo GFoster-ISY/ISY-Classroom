@@ -1,0 +1,76 @@
+/* This style sheet is injected in classroom.google.com */
+
+.isy-injection {
+	background-color: rgb(222,181,37);
+}
+
+
+.isy-menu-item-v2 {
+	height: 32px;
+	display: flex !important;
+	align-items: center;
+}
+
+.isy-menu-item-v2 span {
+	padding: 0 16px;
+	font-size: 16px;
+}
+.isy-menu-item-v2:hover {
+	background-color: rgb(222,181,37);
+}
+
+.isy-menu-item-logo {
+	background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsIAAA7CARUoSoAAAAJzSURBVDhPjZNfSFNhGMaf4+aYNE2H7EwzXTSdEtlGaHguwoLMxFmEWOgUdjGwHGQjmkWxoHsNpExJL9xVCVGgWaZXERSiRqRDRrUUtyFra2t/cmN+becc07GMfvDwnY/3eZ/D9533UABIQmk0arWoKC+H1+fDi4kJuFwuvpJOMuCPZmZmyG6o1eoULy/uobCwkLf9mwcDA+kBFEXx5W1GR0dJOBzhdxyPn4yxa2trW2rAyMgIW0hiNBpJDcMQmpazhupjDOm7d598ftNJ6IIyMjU1xfpSAragaRnJzMwi+bL9xGAwEIvlDgmECOm/BjI/Jie9pj2k+3of6zWbzWxAhjZx2263GwqFAhkCCRpOHcaJI2sgmcW40mPBgInCWuw87I4clJVWQuLpQae+Du0d+uTLkcEwDJRKJY5WJdYSAa5ecMLcUYJGVT9M5yi8Wu3C5s+PWF6Jw+v1oK62GN8drzG3sMQFiMVihEIhtLRchEziR2lBNuS0EEylFNU1FbhU+ww39NHEOUXIkQhAYpvYK5XB/8PLBdhsNpyur8et23dxsCiIBfsGhNQvzC6G0XYygqUVEbyBLAiEQezLj8OzIcbw03UU0LlcwNDQEF5OTkIsimP4eRh0bhDRvMv44DgAXziKs8cFsDlE6GrORlF+BJ3di5idt8FuX2YD2FG2Wq3Q6XTYTNzrzS4FYp5vqG1+hHX7IIrzPkEqjsD67gwOVTXAYDByjVSyleOvgxQIxcnb9zbyda6XfFlNfMsd6HTtqXOQ1P+O8sPBwZ3N2wFbmp6e5q3paDSaFG9Su/7O2qYmlKtU8Pv9GB8fh9Pp5Cs7AX4DnFHe/sPE3EcAAAAASUVORK5CYII=);
+	width: 16px;
+	height: 16px;
+	left: 16px;
+	position: absolute;
+}
+
+/* Dialog Box styling */
+.isy-dialog {
+	position: fixed;
+	top: 10vh;
+	left: 10vw;
+	width: 80vw;
+	height: 80vh;
+	box-shadow: 0px 0px 100px 20px black;
+	border: 1px solid black;
+	z-index: 10000;
+}
+
+.isy-dialog-body {
+	height: calc(80vh - 50px); /* iframe won't size properly otherwise */
+	background: white;
+}
+
+.isy-dialog-header {
+	height: 50px;
+	position: relative;
+}
+
+.isy-dialog .isy-editor {
+	border: 0;
+}
+
+.isy-dialog-header-title {
+	height: 50px;
+	display: inline-block;
+	line-height: 50px;
+	vertical-align: top;
+	font-size: 1.3em;
+}
+
+.isy-dialog-close-button {
+	position: absolute;
+	right: 20px;
+	top: 0px;
+    font-size: 28px;
+    display: inline-block;
+    line-height: 50px;
+    vertical-align: top;
+    top: 0;
+    font-weight: 100;
+    cursor: pointer;
+}
+
