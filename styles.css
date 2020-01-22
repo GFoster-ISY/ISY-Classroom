@@ -47,6 +47,17 @@
 	z-index: 10000;
 }
 
+.isy-popup {
+	top: 10px;
+	left: 10px;
+	width: 600px;
+	height: 480px;
+	box-shadow: 0px 0px 100px 10px black;
+	border: 1px solid black;
+	z-index: 10000;
+}
+
+
 .isy-dialog-body {
 	height: calc(80vh - 50px); /* iframe won't size properly otherwise */
 	background: white;

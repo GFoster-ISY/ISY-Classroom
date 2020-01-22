@@ -1,32 +1,30 @@
 {
-  "name": "ISY Classroom",
-  "version": "1.0",
-  "description": "Add a Summative Assessment for the classroom",
-  "permissions": ["activeTab", "declarativeContent", "storage"],
-  "background": {
-    "scripts": ["background.js"],
-    "persistent": false
-  },
-  "content_scripts":[ {
-    "css": [ "styles.css" ],
-	"js" : ["content.js"],
-	"matches": ["https://classroom.google.com/*"],
-	"run_at": "document_end"
-  } ],
-  "page_action": {
-    "default_popup": "popup.html",
-    "default_icon": {
+"name": "ISY Classroom",
+"version": "1.0",
+"description": "Add a Summative Assessment for the classroom",
+"permissions": ["activeTab", "declarativeContent", "storage"],
+"background": {
+   "scripts": ["background.js"],
+   "persistent": false
+},
+"content_scripts":[ {
+   "css": [ "styles.css" ],
+"js" : ["content.js"],
+"matches": ["https://classroom.google.com/*"],
+"run_at": "document_end"
+} ],
+"browser_action":{
+   "default_popup": "popup.html",
+   "16": "images/ISY16.png",
+   "32": "images/ISY32.png",
+   "48": "images/ISY48.png",
+   "128": "images/ISY128.png"
+},
+"icons": {
       "16": "images/ISY16.png",
       "32": "images/ISY32.png",
       "48": "images/ISY48.png",
       "128": "images/ISY128.png"
-    }
-  },
-  "icons": {
-      "16": "images/ISY16.png",
-      "32": "images/ISY32.png",
-      "48": "images/ISY48.png",
-      "128": "images/ISY128.png"
-  },
-  "manifest_version": 2
+},
+"manifest_version": 2
 }
