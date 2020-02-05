@@ -7,7 +7,6 @@
    var AssessmentShown = false;
    var calendarDialog = createCalendarDialog();
 
- 
    function pollDOM (){
       const el = document.querySelector(activeSelector);
       if (el != null) {
@@ -20,6 +19,24 @@
       }
       setTimeout(pollDOM, 300);
    }
+ 
+   function pollEDITOR (){
+      const el = document.querySelector(".isy-dialog");
+      const parent = el.parentNode
+      var hidden = false;
+      if (el != null) {
+         hidden =  window.getComputedStyle(parent).display === "none";
+      }
+      if (hidden){
+         setTimeout(pollEDITOR, 300);
+      } else {
+         console.log("ISY-EDITOR Seen");
+         console.log("Getting the data from the Google Sheet");
+         var studentList = new Assessment("February",[3,6,8]);
+         console.log(studentList.getStudentList())
+      }
+      
+   }
 
    function extendDateSelector(element){
       var title = element.childNodes[0];
@@ -30,6 +47,8 @@
       var calendarPopup = calendarTable.parentNode;
       calendarPopup.innerHTML = "";
       calendarPopup.appendChild(calendarDialog.node);
+      pollEDITOR();
+
    }
   
    function createCalendarDialog(){
@@ -41,22 +60,11 @@
       var iframe = document.createElement("iframe");
       var myContent = '<!DOCTYPE html>'
       + '<html><head><title>SUMMATIVE ASSIGNMENT</title></head>'
-      + '<body><p id="demo">We need some stuff here</p></body></html>';
+      + '<body  id="ISY-EDITOR"><p>We need some stuff here</p></body></html>';
 
       iframe.classList = "isy-editor";
       iframe.src="javascript:'"+myContent+"'";
       dialog.body.appendChild(iframe);
-
-      // console.log("Load the Google Sheet API");
-      // var head = document.getElementsByTagName('head')[0];
-      // var script = document.createElement('script');
-      // script.type = 'text/javascript';
-      // script.src = "https://sheets.googleapis.com/v4/spreadsheets";
-      // head.appendChild(script);
-
-      console.log("Getting the data from the Google Sheet");
-      var studentList = new Assessment("February",[3,6,8]);
-      console.log(studentList.getStudentList())
 
       return dialog;
    }
