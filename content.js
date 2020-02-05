@@ -41,11 +41,23 @@
       var iframe = document.createElement("iframe");
       var myContent = '<!DOCTYPE html>'
       + '<html><head><title>SUMMATIVE ASSIGNMENT</title></head>'
-      + '<body><p>We need some stuff here</p></body></html>';
+      + '<body><p id="demo">We need some stuff here</p></body></html>';
 
       iframe.classList = "isy-editor";
       iframe.src="javascript:'"+myContent+"'";
       dialog.body.appendChild(iframe);
+
+      // console.log("Load the Google Sheet API");
+      // var head = document.getElementsByTagName('head')[0];
+      // var script = document.createElement('script');
+      // script.type = 'text/javascript';
+      // script.src = "https://sheets.googleapis.com/v4/spreadsheets";
+      // head.appendChild(script);
+
+      console.log("Getting the data from the Google Sheet");
+      var studentList = new Assessment("February",[3,6,8]);
+      console.log(studentList.getStudentList())
+
       return dialog;
    }
 

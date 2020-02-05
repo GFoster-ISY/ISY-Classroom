@@ -2,16 +2,16 @@
 "name": "ISY Classroom",
 "version": "1.0",
 "description": "Add a Summative Assessment for the classroom",
-"permissions": ["activeTab", "declarativeContent", "storage"],
+"permissions": ["https://*.google.com/", "activeTab", "declarativeContent", "storage"],
 "background": {
    "scripts": ["background.js"],
    "persistent": false
 },
 "content_scripts":[ {
    "css": [ "styles.css" ],
-"js" : ["content.js"],
-"matches": ["https://classroom.google.com/*"],
-"run_at": "document_end"
+   "js" : ["assessment.js", "content.js"],
+   "matches": ["https://classroom.google.com/*"],
+   "run_at": "document_end"
 } ],
 "browser_action":{
    "default_popup": "popup.html",
