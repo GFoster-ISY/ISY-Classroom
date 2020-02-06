@@ -65,17 +65,12 @@
          "isy-medium-logo",
          closeCalendarAction
       );
-      var iframe = document.createElement("iframe");
-      var myContent = '<!DOCTYPE html>'
-      + '<html><head><title>SUMMATIVE ASSIGNMENT</title></head>'
-      + '<body  id="ISY-EDITOR"><p>We need some stuff here</p></body></html>';
-
-      iframe.classList = "isy-editor";
-      iframe.src="javascript:'"+myContent+"'";
-      dialog.body.appendChild(iframe);
+      var CalendarDiv = createCalendar(true);
+      dialog.body.appendChild(CalendarDiv);
 
       return dialog;
    }
+
 
    function closeCalendarAction(div){
       div.parentNode.style.display = 'none';

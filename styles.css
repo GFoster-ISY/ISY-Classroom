@@ -78,7 +78,7 @@
 	display: inline-block;
 	line-height: 50px;
 	vertical-align: top;
-	font-size: 1.3em;
+	font-size: 1.5em;
 	padding-left: 80px;
 	background-color: rgb(222,181,37);
 }
@@ -96,3 +96,17 @@
     cursor: pointer;
 }
 
+.isy-body {
+	font-size: 20px;
+	padding: 1em;
+}
+
+.isy-checkbox {
+	width: 20px;
+    height: 20px;
+    margin-right: 10px;
+}
+
+.isy-studentDetails {
+	font-size: 10px;
+}

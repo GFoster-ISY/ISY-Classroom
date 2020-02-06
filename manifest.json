@@ -9,7 +9,7 @@
 },
 "content_scripts":[ {
    "css": [ "styles.css" ],
-   "js" : ["student.js", "assessment.js", "content.js"],
+   "js" : ["ISYCalendar.js", "student.js", "assessment.js", "content.js"],
    "matches": ["https://classroom.google.com/*"],
    "run_at": "document_end"
 } ],
