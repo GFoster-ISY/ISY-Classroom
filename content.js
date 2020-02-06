@@ -2,40 +2,39 @@
 	"use strict";
 	
 	var dateSelector = "[aria-label='Due date & time']";
-	var activeSelector = null;
 	var datePopupSelector = "table[role=presentation]";
-   var AssessmentShown = false;
    var calendarDialog = createCalendarDialog();
 
-   function pollDOM (){
-      const el = document.querySelector(activeSelector);
+   function pollDOMExists (selector, success, callback){
+      const el = document.querySelector(selector);
       if (el != null) {
-         if (!AssessmentShown){
-            extendDateSelector(el);
-            AssessmentShown = true;
+         if (!success){
+            callback(el);
+            success = true;
          }
       } else {
-         AssessmentShown = false;
+         success = false;
       }
-      setTimeout(pollDOM, 300);
+      setTimeout(pollDOMExists, 300, selector, success, callback);
    }
  
-   function pollEDITOR (){
-      const el = document.querySelector(".isy-dialog");
-      const parent = el.parentNode
+   function pollDOMShown (selector, success, callback){
+      const el = document.querySelector(selector);
       var hidden = false;
       if (el != null) {
+         const parent = el.parentNode
          hidden =  window.getComputedStyle(parent).display === "none";
       }
-      if (hidden){
-         setTimeout(pollEDITOR, 300);
-      } else {
-         console.log("ISY-EDITOR Seen");
-         console.log("Getting the data from the Google Sheet");
-         var studentList = new Assessment("February",[3,6,8]);
-         console.log(studentList.getStudentList())
-      }
       
+      if (hidden){
+         success = false;
+      } else {
+         if (!success){
+            callback(el);
+            success = true;
+         }
+      }
+      setTimeout(pollDOMShown, 300, selector, success, callback);
    }
 
    function extendDateSelector(element){
@@ -47,10 +46,19 @@
       var calendarPopup = calendarTable.parentNode;
       calendarPopup.innerHTML = "";
       calendarPopup.appendChild(calendarDialog.node);
-      pollEDITOR();
+      pollDOMShown(".isy-dialog", false, createNewAssessment);
 
    }
   
+   function createNewAssessment(el){
+      // TODO get the studnet id from the classroom and stor these in studentIDs
+      console.log("ISY-EDITOR Seen");
+      console.log("Getting the data from the Google Sheet");
+      var studentIDs = [3,6,8];
+      var studentList = new Assessment("February",studentIDs);
+      console.log(studentList.getStudentList())
+   }
+
    function createCalendarDialog(){
       var dialog = createDialog(
          "ISY SUMMATIVE ASSIGNMENT",
@@ -74,8 +82,7 @@
    }
 
    function waitForLoad() {
-      activeSelector = dateSelector;
-      pollDOM();
+      pollDOMExists(dateSelector, false, extendDateSelector);
    }
 
    function createDialog(title, iconClass, closeAction) {
