@@ -85,12 +85,32 @@ function createMonth(date){
 
    var calendar = document.createElement('table');
    calendar.border = "1";
+   calendar.style.borderCollapse = "collapse";
+   calendar.classList = "isy-calendar-table"
 
    //Get the count of columns.
    var columnCount = 7;
 
-   //Add the header row.
+   //Add the Month header row.
    var row = calendar.insertRow(-1);
+   row.classList = "isy-calendar-month";
+   var headerCell = document.createElement("TH");
+   headerCell.classList = "isy-calendar-month-back"
+   headerCell.innerHTML = "<";
+   row.appendChild(headerCell);
+   var headerCell = document.createElement("TH");
+   headerCell.classList = "isy-calendar-month-text"
+   headerCell.colSpan = 5;
+   headerCell.innerHTML = monthText;
+   row.appendChild(headerCell);
+   var headerCell = document.createElement("TH");
+   headerCell.classList = "isy-calendar-month-forward"
+   headerCell.innerHTML = ">";
+   row.appendChild(headerCell);
+
+   //Add the day header row.
+   var row = calendar.insertRow(-1);
+   row.classList = "isy-calendar-day";
    for (var i = 0; i < columnCount; i++) {
       var headerCell = document.createElement("TH");
       headerCell.innerHTML = monthData[0][i];
@@ -100,6 +120,7 @@ function createMonth(date){
    //Add the data rows.
    for (var i = 1; i < monthData.length; i++) {
       row = calendar.insertRow(-1);
+      row.classList = "isy-calendar-date";
       for (var j = 0; j < columnCount; j++) {
             var cell = row.insertCell(-1);
             cell.innerHTML = monthData[i][j];
