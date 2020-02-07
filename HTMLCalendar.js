@@ -1,45 +1,18 @@
 var calendarViewDate;
+var calendarList = {};
 
-function getMonthData(date){
-    var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-    var month = date.getMonth();
-    var monthText = months[month];
-    var monthData = [];
-    monthData.push(["S","M","T","W","T","F","S"]);
-    var firstDay = new Date(date.getFullYear(), month, 1);
-    var lastDay = new Date(date.getFullYear(), month + 1, 0);
-    var day1 = firstDay.getDay();
-    var dayend = lastDay.getDate();
-    var row = [];
-    var date = 1;
-    for (var i = 0 ; i < day1; i++){
-       row.push("");
-    }
-    for (var i = day1; i < 7; i++){
-       row.push(date);
-       date++;
-    }
-    monthData.push(row);
+function getCalendarDate(date){
+   newCalendar = new Calendar(date);
+   var key = newCalendar.key();
+   if (key in calendarList){
+      return calendarList[key];
+   }
 
-    while (date < dayend){
-       row = [];
-       for (var i = 0; i < 7; i++){
-          if (date <= dayend){
-             row.push(date);
-          } else {
-             row.push("");
-          }
-          date++;
-       }
-       monthData.push(row);
-    }
+   calendarList[key] = newCalendar;
+   return newCalendar;
+}
 
-    return {name : monthText,
-            data : monthData};
- }
-
- 
- function createCalendar(Interact){
+function createCalendar(Interact){
    var container = document.createElement("div");
    container.classList = "isy-body";
    
@@ -66,7 +39,7 @@ function getMonthData(date){
    details.innerText = "x classes and y students";
    studentSummary.appendChild(details);
 
-   calendarViewDate = new Date();
+   calendarViewDate = getCalendarDate(new Date());
    var calendar = createMonth();
 
    if (Interact){
@@ -79,11 +52,9 @@ function getMonthData(date){
 }
 
 function createMonth(){
-   var monthlyData = getMonthData(calendarViewDate);
-   var yearText = calendarViewDate.getFullYear();
-   var monthText = monthlyData.name;
-   var monthData = monthlyData.data;
-
+   var yearText = calendarViewDate.year;
+   var monthText = calendarViewDate.monthText;
+   var monthData = calendarViewDate.calendarArray;
    var container = document.createElement("div");
    container.classList = "isy-calendar";
 
@@ -142,16 +113,14 @@ function createMonth(){
       // Don't bubble the event (without this paging through the months happens multiple times)
       event.stopImmediatePropagation()
    
-      var monthlyData = calendarViewDate.getMonth();
       if (event.target.matches('.isy-calendar-month-back') ){
-         calendarViewDate.setMonth(monthlyData - 1);
+         calendarViewDate = getCalendarDate(calendarViewDate.prevMonth());
       } else if (event.target.matches('.isy-calendar-month-forward')){
-         calendarViewDate.setMonth(monthlyData + 1);
+         calendarViewDate = getCalendarDate(calendarViewDate.nextMonth());
       }
       var calendar = createMonth();
       var el = document.querySelector('.isy-calendar');
       el.parentNode.replaceChild(calendar, el);
-      // Log the clicked element in the console
    
    }, false);
 
