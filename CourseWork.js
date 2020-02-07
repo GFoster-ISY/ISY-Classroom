@@ -1,7 +1,8 @@
-class Student{
-    constructor(id, name){
+class CourseWork{
+    constructor(id, name, course){
         this._id = id;
         this._name = name;
+        this._course = course;
     }
 
     get id(){
@@ -9,6 +10,9 @@ class Student{
     }
     get name(){
         return this._name;
+    }
+    get course(){
+        return this._course;
     }
 
     set name(name){
