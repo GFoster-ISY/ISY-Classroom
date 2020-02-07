@@ -1,3 +1,5 @@
+var calendarViewDate;
+
 function getMonthData(date){
     var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
     var month = date.getMonth();
@@ -64,7 +66,8 @@ function getMonthData(date){
    details.innerText = "x classes and y students";
    studentSummary.appendChild(details);
 
-   var calendar = createMonth(new Date());
+   calendarViewDate = new Date();
+   var calendar = createMonth();
 
    if (Interact){
       container.appendChild(assessmentType);
@@ -75,8 +78,9 @@ function getMonthData(date){
    return container;
 }
 
-function createMonth(date){
-   var monthlyData = getMonthData(date);
+function createMonth(){
+   var monthlyData = getMonthData(calendarViewDate);
+   var yearText = calendarViewDate.getFullYear();
    var monthText = monthlyData.name;
    var monthData = monthlyData.data;
 
@@ -101,7 +105,7 @@ function createMonth(date){
    var headerCell = document.createElement("TH");
    headerCell.classList = "isy-calendar-month-text"
    headerCell.colSpan = 5;
-   headerCell.innerHTML = monthText;
+   headerCell.innerHTML = monthText + " " + yearText;
    row.appendChild(headerCell);
    var headerCell = document.createElement("TH");
    headerCell.classList = "isy-calendar-month-forward"
@@ -128,6 +132,28 @@ function createMonth(date){
    }
    
    container.appendChild(calendar);
+   document.addEventListener('click', function (event) {
+
+      // If the clicked element doesn't have the right selector, bail
+      if (!event.target.matches('.isy-calendar-month-back') &&
+         !event.target.matches('.isy-calendar-month-forward')
+         ) return;
+   
+      // Don't bubble the event (without this paging through the months happens multiple times)
+      event.stopImmediatePropagation()
+   
+      var monthlyData = calendarViewDate.getMonth();
+      if (event.target.matches('.isy-calendar-month-back') ){
+         calendarViewDate.setMonth(monthlyData - 1);
+      } else if (event.target.matches('.isy-calendar-month-forward')){
+         calendarViewDate.setMonth(monthlyData + 1);
+      }
+      var calendar = createMonth();
+      var el = document.querySelector('.isy-calendar');
+      el.parentNode.replaceChild(calendar, el);
+      // Log the clicked element in the console
+   
+   }, false);
 
    return container;
 }
