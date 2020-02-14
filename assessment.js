@@ -32,7 +32,14 @@ class Assessment{
         }
     }
     setStudentList(ids){
-        // get the studentlist from the Google Sheet
+        // get the student ids from the classroom
+
+        const courseSelector = "a[target=\"_blank\"][data-focus-id] span";
+        const el = document.querySelector(courseSelector);
+        const className = el.innerHTML;
+        console.log("Active class : "+className);
+
+        // get the student details from the Google Sheet
         var URL = "https://script.google.com/a/isyedu.org/macros/s/AKfycbw1cM8fnqav_mnJVLOC6F_h2U1dme7KhtE5l-rmioM/dev";
         var DATA = "[32,55,27,18]";
         URL = URL + "?ids=" + DATA;

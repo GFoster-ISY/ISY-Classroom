@@ -37,17 +37,14 @@
       setTimeout(pollDOMShown, 300, selector, success, callback);
    }
 
-   function extendDateSelector(element){
+   function extendDateSelector(calendarTable){
+      var element = document.querySelector(dateSelector);
       var title = element.childNodes[0];
       title.classList.add("isy-injection");
-      var calendarTable = document.querySelector(datePopupSelector);
-      if (!calendarTable)
-         return;
       var calendarPopup = calendarTable.parentNode;
       calendarPopup.innerHTML = "";
       calendarPopup.appendChild(calendarDialog.node);
       pollDOMShown(".isy-dialog", false, createNewAssessment);
-
    }
   
    function createNewAssessment(el){
@@ -77,7 +74,7 @@
    }
 
    function waitForLoad() {
-      pollDOMExists(dateSelector, false, extendDateSelector);
+      pollDOMExists(datePopupSelector, false, extendDateSelector);
    }
 
    function createDialog(title, iconClass, closeAction) {
