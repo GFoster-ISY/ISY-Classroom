@@ -9,7 +9,7 @@
 },
 "content_scripts":[ {
    "css": [ "styles.css" ],
-   "js" : ["Course.js", "Calendar.js", "HTMLCalendar.js", "student.js", "assessment.js", "content.js"],
+   "js" : ["SALObject.js", "CourseWork.js", "Course.js", "Calendar.js", "HTMLCalendar.js", "Student.js", "Assessment.js", "content.js"],
    "matches": ["https://classroom.google.com/*"],
    "run_at": "document_end"
 } ],

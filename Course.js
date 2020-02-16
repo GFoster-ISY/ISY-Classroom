@@ -1,17 +1,17 @@
 class Course extends SALObject{
     constructor(id, name) {
         super(id, name);
-        studentList = {};
+        this.studentList = {};
     }
 
     addStudent(student){
         this.studentList[student.id] = student;
     }
 
-    addStudents(studentList){
-        for (id in studentList){
-            var student = studentList[id];
-            this.studentList[student.id] = student;
+    createStudentList(studentList){
+        for (var id in studentList){
+            var student = new Student(id, studentList[id]);
+            this.studentList[id] = student;
         }
     }
 

@@ -2,7 +2,8 @@
 	"use strict";
 	
 	var dateSelector = "[aria-label='Due date & time']";
-	var datePopupSelector = "table[role=presentation]";
+   var datePopupSelector = "table[role=presentation]";
+   var MonthList = {};
    var calendarDialog = createCalendarDialog();
 
    function pollDOMExists (selector, success, callback){
@@ -44,16 +45,22 @@
       var calendarPopup = calendarTable.parentNode;
       calendarPopup.innerHTML = "";
       calendarPopup.appendChild(calendarDialog.node);
-      pollDOMShown(".isy-dialog", false, createNewAssessment);
+      pollDOMShown(".isy-dialog", false, getStudentLoad);
    }
   
-   function createNewAssessment(el){
-      // TODO get the studnet id from the classroom and stor these in studentIDs
+   function getStudentLoad(el){
       console.log("ISY-EDITOR Seen");
-      console.log("Getting the data from the Google Sheet");
-      var studentIDs = [3,6,8];
-      var studentList = new Assessment("February",studentIDs);
-      console.log(studentList.getStudentList())
+      console.log("Trigger off code to get the studentload details");
+   }
+   
+   function getCurrentMonth(){
+      return "February";
+   }
+
+   function createNewAssessment(){
+      var month = getCurrentMonth();
+      var monthAssessmentDetails = new Assessment(month);
+      MonthList[monthAssessmentDetails.month] = monthAssessmentDetails;
    }
 
    function createCalendarDialog(){
@@ -74,6 +81,7 @@
    }
 
    function waitForLoad() {
+      createNewAssessment();
       pollDOMExists(datePopupSelector, false, extendDateSelector);
    }
 
