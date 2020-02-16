@@ -14,4 +14,8 @@ class SALObject{
     set name(name){
         this._name = name;
     }
+
+    toString() {
+        return  this._name;
+    }
 }

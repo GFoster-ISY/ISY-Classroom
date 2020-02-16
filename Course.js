@@ -8,6 +8,9 @@ class Course extends SALObject{
         this.studentList[student.id] = student;
     }
 
+    getEnrolledStudentCount() {
+        return Object.keys(this.studentList).length;
+    }
     createStudentList(studentList){
         for (var id in studentList){
             var student = new Student(id, studentList[id]);

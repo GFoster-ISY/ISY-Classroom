@@ -6,10 +6,11 @@ class Assessment{
         this._month = month;
         this._courseList = {};
         this._studentList = {};
+        this._studentDataReceived = false;
         this.getCourseList();
         this._courseIds = [];
         this._activeCourses = {};
-        this._activeCourse = "";
+        this._activeCourse = null;
     }
 
     get month(){
@@ -17,6 +18,9 @@ class Assessment{
     }
     set name(month){
         this._month = month;
+    }
+    get studentDataReceived(){
+        return this._studentDataReceived
     }
 
     getStudent(id){
@@ -27,23 +31,24 @@ class Assessment{
     }
 
     setActiveCourse(){
-            // Scrape the active class name from the HTML
-            const courseSelector = "a[target=\"_blank\"][data-focus-id] span";
-            const el = document.querySelector(courseSelector);
-            const className = el.innerHTML;
-            this._activeCourse = className;
-            console.log("Active class : "+className);
-            for (var id in this._courseList){
-                if (this._courseList[id].name == className){
-                    this._activeCourses [id] = this._courseList[id];
-                    console.log("Active Course " + id + " : " + list[id]);
-                }
+        // Scrape the active class name from the HTML
+        const courseSelector = "a[target=\"_blank\"][data-focus-id] span";
+        const el = document.querySelector(courseSelector);
+        const className = el.innerHTML;
+        console.log("Active class : "+className);
+        for (var id in this._courseList){
+            if (this._courseList[id].name == className){
+                this._activeCourse = this._courseList[id];
+                this._activeCourses [id] = this._courseList[id];
+                console.log("Active Course " + id + " : " + this._courseList[id]);
             }
+        }
         return this._activeCourse;
     }
 
     storeCourseList(xhttp){
         if (xhttp.readyState == 4 && xhttp.status == 200) {
+            console.log(xhttp.responseText);
             var list = JSON.parse(xhttp.responseText);
             for (var id in list){
                 var course =  new Course(id, list[id]);
@@ -68,11 +73,13 @@ class Assessment{
 
     storeStudentList(xhttp){
         if (xhttp.readyState == 4 && xhttp.status == 200) {
+            console.log(xhttp.responseText);
             var list = JSON.parse(xhttp.responseText);
             for (var c in list){
                 var course =  this._courseList[c];
                 course.createStudentList(list[c]);
             }
+            this._studentDataReceived = true;
         }
     }
 

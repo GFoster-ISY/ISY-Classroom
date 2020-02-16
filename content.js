@@ -3,7 +3,8 @@
 	
 	var dateSelector = "[aria-label='Due date & time']";
    var datePopupSelector = "table[role=presentation]";
-   var MonthList = {};
+   var studentDetailsSelector = ".isy-studentDetails"
+   var assessmentDetails = null;
    var calendarDialog = createCalendarDialog();
 
    function pollDOMExists (selector, success, callback){
@@ -51,6 +52,12 @@
    function getStudentLoad(el){
       console.log("ISY-EDITOR Seen");
       console.log("Trigger off code to get the studentload details");
+      // TODO add a dialog box here if the student data hasn't yet been loaded
+      if (assessmentDetails.studentDataReceived){
+         const activeCourse = assessmentDetails.setActiveCourse();
+         const el = document.querySelector(studentDetailsSelector);
+         el.innerHTML = activeCourse + " All " + activeCourse.getEnrolledStudentCount() + " students";
+      }
    }
    
    function getCurrentMonth(){
@@ -59,8 +66,7 @@
 
    function createNewAssessment(){
       var month = getCurrentMonth();
-      var monthAssessmentDetails = new Assessment(month);
-      MonthList[monthAssessmentDetails.month] = monthAssessmentDetails;
+      assessmentDetails = new Assessment(month);
    }
 
    function createCalendarDialog(){
