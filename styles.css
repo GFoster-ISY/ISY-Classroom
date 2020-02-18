@@ -40,8 +40,8 @@
 	position: fixed;
 	top: 10vh;
 	left: 10vw;
-	width: 80vw;
-	height: 80vh;
+	width: 600px;
+	height: 650px;
 	box-shadow: 0px 0px 100px 20px black;
 	border: 1px solid black;
 	z-index: 10000;
@@ -51,15 +51,16 @@
 	top: 10px;
 	left: 10px;
 	width: 600px;
-	height: 480px;
-	box-shadow: 0px 0px 100px 10px black;
+	height: 650px;
+	box-shadow: 0px 0px 50px 10px black;
 	border: 1px solid black;
 	z-index: 10000;
 }
 
 
 .isy-dialog-body {
-	height: calc(80vh - 50px); /* iframe won't size properly otherwise */
+	width: 600px;
+	height: 600px;
 	background: white;
 }
 
@@ -123,6 +124,7 @@
 }
 
 .isy-calendar-month-back {
+	cursor: pointer;
 	border-right: 0px;
 }
 .isy-calendar-month-text {
@@ -130,6 +132,7 @@
 	border-right: 0px;
 }
 .isy-calendar-month-forward{
+	cursor: pointer;
 	border-left: 0px;
 }
 
@@ -140,5 +143,85 @@
 
 .isy-calendar-date {
 	width: 50px;
+	height: 70px;
+}
+
+tr.isy-calendar-date td {
+	padding: 0px;
+}
+.isy-day-container{
+	height: 70px;
+}
+
+.isy-tt-day {
+	background-color: forestgreen;
+	width: 50px;
+	height: 10px;
+	border-bottom: 1px solid;
+}
+
+.isy-day{
+	cursor: pointer;
+    line-height: 50px;
+	width: 50px;
 	height: 50px;
+}
+
+.isy-day-holiday{
+	background-color: slateblue;
+}
+
+.isy-day-day0{
+	background-color: lightblue;
+}
+
+.isy-day-1{
+	background-color: orange;
+}
+
+.isy-day-2{
+	background-color: crimson;
+}
+
+.isy-hidden {
+	visibility: hidden;
+}
+
+.isy-selected-day {
+	background-color: cornflowerblue;
+    width: 50px;
+    height: 50px;
+    z-index: 10;
+    opacity: .75;
+    border-radius: 50%;
+    position: relative;
+    top: -50px;
+}
+
+.isy-sal-0 {
+	width: 16px;
+	height: 10px;
+    position: relative;
+    top: -51px;
+	border-top:  1px solid;
+    border-right:  1px solid;
+}
+
+.isy-sal-1 {
+	width: 17px;
+	height: 10px;
+    position: relative;
+    top: -62px;
+    left: 17px;
+	border-top:  1px solid;
+}
+
+.isy-sal-2 {
+	width: 16px;
+	height: 10px;
+    position: relative;
+    top: -73px;
+    left: 34px;	
+	border-top:  1px solid;
+    border-left:  1px solid;
 }

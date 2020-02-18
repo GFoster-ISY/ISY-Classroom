@@ -75,7 +75,7 @@
          "isy-medium-logo",
          closeCalendarAction
       );
-      var CalendarDiv = createCalendar(true);
+      var CalendarDiv = createCalendar(true, new Date());
       dialog.body.appendChild(CalendarDiv);
 
       return dialog;

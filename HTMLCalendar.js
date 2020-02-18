@@ -12,7 +12,7 @@ function getCalendarDate(date){
    return newCalendar;
 }
 
-function createCalendar(Interact){
+function createCalendar(Interact, ActiveDate){
    var container = document.createElement("div");
    container.classList = "isy-body";
    
@@ -39,7 +39,7 @@ function createCalendar(Interact){
    details.innerText = "x classes and y students";
    studentSummary.appendChild(details);
 
-   calendarViewDate = getCalendarDate(new Date());
+   calendarViewDate = getCalendarDate(ActiveDate);
    var calendar = createMonth();
 
    if (Interact){
@@ -98,7 +98,8 @@ function createMonth(){
       row.classList = "isy-calendar-date";
       for (var j = 0; j < columnCount; j++) {
             var cell = row.insertCell(-1);
-            cell.innerHTML = monthData[i][j];
+            var day = monthData[i][j];
+            cell.innerHTML = createDay(day);
       }
    }
    
@@ -125,4 +126,20 @@ function createMonth(){
    }, false);
 
    return container;
-}
+} // end of function createMonth()
+
+function createDay(day){
+   var activeDay = calendarViewDate.day;
+   var cell = '<div class=isy-day-container><div id="isy-tt-day-"' + day + ' class="isy-tt-day"></div>';
+   cell += '<div id="isy-day-' + day + '" class="isy-day">' + day + '</div>';
+   if (day == activeDay){
+      cell += '<div id="isy-selected-day-' + day + '" class="isy-selected-day"></div>';
+   } else {
+      cell += '<div id="isy-selected-day-' + day + '" class="isy-selected-day isy-hidden"></div>';
+   }
+   cell += '<div id="isy-sal-0-' + day + '" class="isy-sal-0"></div>';
+   cell += '<div id="isy-sal-1-' + day + '" class="isy-sal-1"></div>';
+   cell += '<div id="isy-sal-2-' + day + '" class="isy-sal-2"></div></div>';
+   console.log(cell);
+   return cell
+} // end of function createDay()

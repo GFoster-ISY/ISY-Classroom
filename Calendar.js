@@ -18,6 +18,10 @@ class Calendar{
         return this._month;
     }
 
+    get day(){
+        return this._day;
+    }
+    
     get monthText(){
         return this._monthText;
     }
