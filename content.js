@@ -75,7 +75,8 @@
          "isy-medium-logo",
          closeCalendarAction
       );
-      var CalendarDiv = createCalendar(true, new Date());
+      var activeDay = new Calendar(new Date()).addSchoolDays(2);
+      var CalendarDiv = createCalendar(false, activeDay);
       dialog.body.appendChild(CalendarDiv);
 
       return dialog;

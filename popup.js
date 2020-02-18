@@ -1,7 +1,7 @@
 function loadCalendar(){
-    console.log("loadCalendar()");
     const body = document.querySelector(".isy-dialog-body");
-    var CalendarDiv = createCalendar(false, new Date());
+    var activeDay = new Calendar(new Date()).addSchoolDays(2);
+    var CalendarDiv = createCalendar(false, activeDay);
     body.appendChild(CalendarDiv);
 }
 

@@ -21,7 +21,7 @@ class Calendar{
     get day(){
         return this._day;
     }
-    
+
     get monthText(){
         return this._monthText;
     }
@@ -30,11 +30,39 @@ class Calendar{
         return this._calendarArray;
     }
 
+    addSchoolDays (n){
+        var day = this._day;
+        while (n > 0){
+            day++;
+            if (this.isSchoolDay(day)){
+                n--;
+            }
+        }
+        return new Date(this._year, this._month, day);
+    }
+
+    isSchoolDay(day){
+        // TODO calculate this from the calendar
+        var date = new Date(this._year, this._month, day);
+        if (date.getDay() == 0 || date.getDay() == 6){
+            return false;
+        }
+        return true;
+    }
+
     prevMonth(){
+        var prev = new Date(this._year, this._month, 0);
+        if (prev.getDate() < this._day){
+            return prev;
+        }
         return new Date(this._year, this._month - 1, this._day);
     }
 
     nextMonth(){
+        var next = new Date(this._year, this._month+2, 0);
+        if (next.getDate() < this._day){
+            return next;
+        }
         return new Date(this._year, this._month + 1, this._day);
     }
 

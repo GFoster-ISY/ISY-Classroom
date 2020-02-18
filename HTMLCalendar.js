@@ -131,15 +131,14 @@ function createMonth(){
 function createDay(day){
    var activeDay = calendarViewDate.day;
    var cell = '<div class=isy-day-container><div id="isy-tt-day-"' + day + ' class="isy-tt-day"></div>';
-   cell += '<div id="isy-day-' + day + '" class="isy-day">' + day + '</div>';
    if (day == activeDay){
       cell += '<div id="isy-selected-day-' + day + '" class="isy-selected-day"></div>';
    } else {
       cell += '<div id="isy-selected-day-' + day + '" class="isy-selected-day isy-hidden"></div>';
    }
+   cell += '<div id="isy-day-' + day + '" class="isy-day">' + day + '</div>';
    cell += '<div id="isy-sal-0-' + day + '" class="isy-sal-0"></div>';
    cell += '<div id="isy-sal-1-' + day + '" class="isy-sal-1"></div>';
    cell += '<div id="isy-sal-2-' + day + '" class="isy-sal-2"></div></div>';
-   console.log(cell);
    return cell
 } // end of function createDay()

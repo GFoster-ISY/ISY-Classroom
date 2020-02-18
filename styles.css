@@ -151,6 +151,7 @@ tr.isy-calendar-date td {
 }
 .isy-day-container{
 	height: 70px;
+	position:relative;
 }
 
 .isy-tt-day {
@@ -162,6 +163,7 @@ tr.isy-calendar-date td {
 
 .isy-day{
 	cursor: pointer;
+	background : lightsalmon;
     line-height: 50px;
 	width: 50px;
 	height: 50px;
@@ -194,34 +196,36 @@ tr.isy-calendar-date td {
     z-index: 10;
     opacity: .75;
     border-radius: 50%;
-    position: relative;
-    top: -50px;
+	position: absolute;
+	top:10px;
 }
 
 .isy-sal-0 {
-	width: 16px;
+	background : red;
+	width: 32%;
 	height: 10px;
-    position: relative;
-    top: -51px;
+    float: left;
 	border-top:  1px solid;
     border-right:  1px solid;
 }
 
 .isy-sal-1 {
-	width: 17px;
+	background : green;
+	width: 32%;
 	height: 10px;
-    position: relative;
-    top: -62px;
-    left: 17px;
+    float: left;
 	border-top:  1px solid;
 }
 
 .isy-sal-2 {
-	width: 16px;
+	background : blue;
+	width: 32%;
 	height: 10px;
-    position: relative;
-    top: -73px;
-    left: 34px;	
+    float: left;
 	border-top:  1px solid;
     border-left:  1px solid;
+}
+
+.clear {
+	clear: both;
 }
