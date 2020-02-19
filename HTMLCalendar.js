@@ -12,11 +12,12 @@ function getCalendarDate(date){
    return newCalendar;
 }
 
-function createCalendar(Interact, ActiveDate){
+function createCalendar(interact){
+   assessmentDetails.getStudentLoad();
    var container = document.createElement("div");
    container.classList = "isy-body";
    
-   if (Interact){
+   if (interact){
       var assessmentType = document.createElement("div");
       var checkbox = document.createElement("input");
       checkbox.type = "checkbox";
@@ -39,10 +40,10 @@ function createCalendar(Interact, ActiveDate){
    details.innerText = "x classes and y students";
    studentSummary.appendChild(details);
 
-   calendarViewDate = getCalendarDate(ActiveDate);
+   calendarViewDate = getCalendarDate(activeDay);
    var calendar = createMonth();
 
-   if (Interact){
+   if (interact){
       container.appendChild(assessmentType);
    }
    container.appendChild(studentSummary);

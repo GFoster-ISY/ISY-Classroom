@@ -7,7 +7,7 @@ class Assessment{
         this._courseList = {};
         this._studentList = {};
         this._studentDataReceived = false;
-        this.getCourseList();
+        this.loadCourseList();
         this._courseIds = [];
         this._activeCourses = {};
         this._activeCourse = null;
@@ -55,11 +55,11 @@ class Assessment{
                 this._courseList[id] = course;
                 this._courseIds.push(id);
             }
-            this.setStudentLists(this._courseIds);
+            this.loadStudentList(this._courseIds);
         }
     }
 
-    getCourseList(){
+    loadCourseList(){
         // Get a list of all courses
         var url = this.URL + "course";
         var xhttp = new XMLHttpRequest();
@@ -77,13 +77,15 @@ class Assessment{
             var list = JSON.parse(xhttp.responseText);
             for (var c in list){
                 var course =  this._courseList[c];
-                course.createStudentList(list[c]);
+                course.createStudentList(this._studentList, list[c]);
             }
             this._studentDataReceived = true;
+            this.loadStudentWorkLoadList(this._studentList);
+            console.log(this._studentList);
         }
     }
 
-    setStudentLists(ids){
+    loadStudentList(ids){
         // set up the necessary data 
         var url  = this.URL + "course_student";
         // get the student ids from the classroom
@@ -97,4 +99,11 @@ class Assessment{
         xhttp.send();
     }
 
+    loadStudentWorkLoadList(list){
+        // TODO Call to google sheet to get the studnet load for each student in _studnetList
+    }
+
+    getStudentLoad(){
+        var month = getCurrentMonth();
+    }
 }

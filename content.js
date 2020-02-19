@@ -60,13 +60,8 @@
       }
    }
    
-   function getCurrentMonth(){
-      return "February";
-   }
-
    function createNewAssessment(){
-      var month = getCurrentMonth();
-      assessmentDetails = new Assessment(month);
+      assessmentDetails = new Assessment(getCurrentMonth());
    }
 
    function createCalendarDialog(){
@@ -75,8 +70,7 @@
          "isy-medium-logo",
          closeCalendarAction
       );
-      var activeDay = new Calendar(new Date()).addSchoolDays(2);
-      var CalendarDiv = createCalendar(false, activeDay);
+      var CalendarDiv = createCalendar(true, getActiveDay(2));
       dialog.body.appendChild(CalendarDiv);
 
       return dialog;

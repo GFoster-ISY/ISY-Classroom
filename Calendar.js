@@ -111,3 +111,17 @@ class Calendar{
 
 Calendar.months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 Calendar.days = ["S","M","T","W","T","F","S"];
+
+var activeDay = null;
+function getActiveDay(n){
+    if (activeDay == null){
+        activeDay = new Calendar(new Date()).addSchoolDays(n);
+    }
+    return activeDay;
+}
+
+function getCurrentMonth(){
+    getActiveDay(2); // TODO get the 2 from a user defined parameter
+    return Calendar.months[activeDay.getMonth()];
+ }
+
