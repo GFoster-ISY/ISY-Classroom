@@ -67,7 +67,7 @@ class Assessment{
         xhttp.onreadystatechange=function () {
             assessmentObj.storeCourseList(this);
         };
-        xhttp.open("GET", url, true);
+        xhttp.open("POST", url, true);
         xhttp.send();
     }
 
@@ -95,7 +95,7 @@ class Assessment{
         xhttp.onreadystatechange=function () {
             assessmentObj.storeStudentList(this);
         };
-        xhttp.open("GET", url, true);
+        xhttp.open("POST", url, true);
         xhttp.send();
     }
 
