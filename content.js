@@ -1,45 +1,14 @@
 ( function () {
 	"use strict";
 	
-	var dateSelector = "[aria-label='Due date & time']";
+   var dateSelector = "[aria-label='Due date & time']";
+   var dateInputSelector = "[aria-label='Due date & time'] input";
    var datePopupSelector = "table[role=presentation]";
    var studentDetailsSelector = ".isy-studentDetails"
    var theAssessment = new Assessment(getCurrentMonth());
    var calendarDialog = createCalendarDialog();
 
-   function pollDOMExists (selector, success, callback){
-      const el = document.querySelector(selector);
-      if (el != null) {
-         if (!success){
-            callback(el);
-            success = true;
-         }
-      } else {
-         success = false;
-      }
-      setTimeout(pollDOMExists, 300, selector, success, callback);
-   }
- 
-   function pollDOMShown (selector, success, callback){
-      const el = document.querySelector(selector);
-      var hidden = false;
-      if (el != null) {
-         const parent = el.parentNode
-         hidden =  window.getComputedStyle(parent).display === "none";
-      }
-      
-      if (hidden){
-         success = false;
-      } else {
-         if (!success){
-            callback(el);
-            success = true;
-         }
-      }
-      setTimeout(pollDOMShown, 300, selector, success, callback);
-   }
-
-   function extendDateSelector(calendarTable){
+    function extendDateSelector(calendarTable){
       var element = document.querySelector(dateSelector);
       var title = element.childNodes[0];
       title.classList.add("isy-injection");
@@ -50,6 +19,9 @@
    }
   
    function getStudentLoad(el){
+      var dateText = theAssessment.getCalendar(activeDay).getDateText();
+      var element = document.querySelector(dateInputSelector);
+      element.value = dateText;
       // TODO add a dialog box here if the student data hasn't yet been loaded
       if (theAssessment.studentDataReceived){
          const activeCourse = theAssessment.setActiveCourse();
@@ -117,3 +89,39 @@
 
    waitForLoad();
 })();
+
+function pollDOMExists (selector, success, callback, object = null){
+   const el = document.querySelector(selector);
+   if (el != null) {
+      if (!success){
+         if (object != null){
+            object[callback](el);
+         } else {
+            callback(el);
+         }
+         success = true;
+      }
+   } else {
+      success = false;
+   }
+   setTimeout(pollDOMExists, 300, selector, success, callback, object);
+}
+
+function pollDOMShown (selector, success, callback){
+   const el = document.querySelector(selector);
+   var hidden = false;
+   if (el != null) {
+      const parent = el.parentNode
+      hidden =  window.getComputedStyle(parent).display === "none";
+   }
+   
+   if (hidden){
+      success = false;
+   } else {
+      if (!success){
+         callback(el);
+         success = true;
+      }
+   }
+   setTimeout(pollDOMShown, 300, selector, success, callback);
+}

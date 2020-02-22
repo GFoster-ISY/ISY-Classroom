@@ -206,7 +206,9 @@ tr.isy-calendar-date td {
 	height: 10px;
     float: left;
 	border-top:  1px solid;
-    border-right:  1px solid;
+	border-right:  1px solid;
+	font-size: 10px;
+	line-height: 10px;
 }
 
 .isy-sal-1 {
@@ -215,6 +217,8 @@ tr.isy-calendar-date td {
 	height: 10px;
     float: left;
 	border-top:  1px solid;
+	font-size: 10px;
+	line-height: 10px;
 }
 
 .isy-sal-2 {
@@ -224,6 +228,8 @@ tr.isy-calendar-date td {
     float: left;
 	border-top:  1px solid;
     border-left:  1px solid;
+	font-size: 10px;
+	line-height: 10px;
 }
 
 .clear {

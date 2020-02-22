@@ -27,25 +27,28 @@ class DayLoad{
         return this._finishedCalculating;
     }
 
-    get freeStudentCount(){
-        return this._freeStudents[0];
+    freeStudentCount(){
+        return this._freeStudents.length;
     }
-    get availableStudentCount(){
-        return this._freeStudents[1];
+    availableStudentCount(){
+        return this._availableStudents.length;
     }
-    get busyStudentCount(){
-        return this._freeStudents[2];
+    busyStudentCount(){
+        return this._busyStudents.length;
     }
-    get freeStudentList(){
+    freeStudentList(){
         return this._freeStudents;
     }
-    get availableStudentList(){
+    availableStudentList(){
         return this._availableStudents;
     }
-    get busyStudentList(){
+    busyStudentList(){
         return this._busyStudents;
     }
 
+    getStats(){
+        return [this.freeStudentCount(), this.availableStudentCount(), this.busyStudentCount()];
+    }
     storeStudentLoad(load){
         for (var studentID in load){
             var loadDetails;
@@ -57,10 +60,22 @@ class DayLoad{
                 this._studentDetails[studentID] = loadDetails;
             }
             loadDetails.storeStudentLoad(load[studentID]);
+            this.checkStudentLoad();
+            this._finishedCalculating = true;
         }
     }
-    checkStudentLoad(StudentList){
-
+    checkStudentLoad(){
+        for (var studentID in this.getAssessment().getStudentList()){
+            if (studentID in this._studentDetails){
+                if (Object.keys(this._studentDetails[studentID]).length == 1){
+                    this._availableStudents.push(studentID);
+                } else {
+                    this._busyStudents.push(studentID);
+                }
+            } else {
+                this._freeStudents.push(studentID);
+            }
+        }
     }
 
 }

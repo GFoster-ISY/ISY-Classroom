@@ -4,6 +4,7 @@ class Calendar{
         this._workingDate = date;
         this._assessment = theAssessment;
         this._year = date.getFullYear();
+        this._numberOfDays;
         this.getMonthData(date);
         this._dayDetails = {};
         this._finishedCalculating = false;
@@ -74,7 +75,21 @@ class Calendar{
     key(){
         return this._year * 100 + this._month;
     }
+    
+    getStats(day){
+        var stats = ['?','?','?'];
+        if (this._dayDetails[day]){
+            stats = this._dayDetails[day].getStats();
+        } else {
+            this._displayingCalendar = true; 
+        }
+        return stats;
+    }
 
+    getDateText(){
+        return Calendar.shortMonths[this.month] + " " + this.day + ", " + this.year;
+    }
+    
     getMonthData(date){
         this._month = date.getMonth();
         this._monthText = Calendar.months[this._month];
@@ -119,13 +134,34 @@ class Calendar{
                 dayLoad = new DayLoad(day, this)
                 this._dayDetails[day] = dayLoad;
             }
-            dayLoad.storeStudentLoad(load[day])
+            if (this._displayingCalendar){
+                pollDOMExists(".isy-calendar", false, "addLoadToCalendar", this);
+
+            }
         }
+        dayLoad.storeStudentLoad(load[day])
+        this._finishedCalculating = true;
     } // end of method storeStudentLoad
+
+    addLoadToCalendar(){
+        for (var day = 1; day < this._numberOfDays; day++){
+            if (this._dayDetails[day]){
+                var stats = this._dayDetails[day].getStats();
+                for (var i = 0; i < 3; i++){
+                    const elName = "isy-sal-" + i + "-" + day;
+                    const el = document.getElementById(elName);
+                    el.innerHTML = stats[i];
+                }
+            }
+        }
+    }
+
 
 } // end of class Calendar
 
+
 Calendar.months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+Calendar.shortMonths = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 Calendar.days = ["S","M","T","W","T","F","S"];
 
 var activeDay = null;
