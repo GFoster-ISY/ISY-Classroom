@@ -1,16 +1,28 @@
 class DayLoad{
-    constructor(date){
-        this._date = date;
+    constructor(day, calendar){
+        this._day = day;
+        this._calendar = calendar;
         this.totals = [0,0,0];
+        this._studentDetails = {};
         this._freeStudents = [];
         this._availableStudents = [];
         this._busyStudents = [];
         this._finishedCalculating = false;
     }
 
+    
+    
     get day(){
         return this._day;
     }
+    get calendar(){
+        return this._calendar;
+    }
+
+    getAssessment(){
+        return this._calendar.getAssessment();
+    }
+
     get finished(){
         return this._finishedCalculating;
     }
@@ -34,6 +46,19 @@ class DayLoad{
         return this._busyStudents;
     }
 
+    storeStudentLoad(load){
+        for (var studentID in load){
+            var loadDetails;
+            if (studentID in this._studentDetails){
+                loadDetails = this._studentDetails[studentID];
+            } else {
+                var student = this.getAssessment().getStudent(studentID);
+                loadDetails = new LoadDetails(student, this);
+                this._studentDetails[studentID] = loadDetails;
+            }
+            loadDetails.storeStudentLoad(load[studentID]);
+        }
+    }
     checkStudentLoad(StudentList){
 
     }

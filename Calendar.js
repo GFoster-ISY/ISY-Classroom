@@ -1,13 +1,18 @@
 class Calendar{
 
-    constructor(date){
+    constructor(date, theAssessment){
         this._workingDate = date;
+        this._assessment = theAssessment;
         this._year = date.getFullYear();
         this.getMonthData(date);
         this._dayDetails = {};
         this._finishedCalculating = false;
         this._displayingCalendar = false;
         this._day = date.getDate();
+    }
+
+    getAssessment(){
+        return this._assessment;
     }
 
     get year(){
@@ -105,15 +110,26 @@ class Calendar{
         this._calendarArray = monthData;
     }
     
-    
+    storeStudentLoad(load){
+        for (var day in load){
+            var dayLoad;
+            if (day in this._dayDetails){
+                dayLoad = this._dayDetails[day];
+            } else {
+                dayLoad = new DayLoad(day, this)
+                this._dayDetails[day] = dayLoad;
+            }
+            dayLoad.storeStudentLoad(load[day])
+        }
+    } // end of method storeStudentLoad
 
-}
+} // end of class Calendar
 
 Calendar.months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 Calendar.days = ["S","M","T","W","T","F","S"];
 
 var activeDay = null;
-function getActiveDay(n){
+function getActiveDate(n){
     if (activeDay == null){
         activeDay = new Calendar(new Date()).addSchoolDays(n);
     }
@@ -121,7 +137,10 @@ function getActiveDay(n){
 }
 
 function getCurrentMonth(){
-    getActiveDay(2); // TODO get the 2 from a user defined parameter
+    getActiveDate(2); // TODO get the 2 from a user defined parameter
     return Calendar.months[activeDay.getMonth()];
  }
 
+function getCalendarKey(date){
+    return date.getFullYear() * 100 + date.getMonth();
+}

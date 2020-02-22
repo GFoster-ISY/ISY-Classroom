@@ -1,5 +1,5 @@
 class Course extends SALObject{
-    constructor(id, name) {
+    constructor(id, name = id) {
         super(id, name);
         this.studentList = {};
     }

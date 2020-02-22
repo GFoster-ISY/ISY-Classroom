@@ -1,7 +1,10 @@
-var assessmentDetails = null;
+var theAssessment = null;
 
+function getAssessment(){
+    return theAssessment;
+ }
 function loadCalendar(){
-    assessmentDetails = new Assessment(getCurrentMonth());
+    theAssessment = new Assessment(getCurrentMonth());
     const body = document.querySelector(".isy-dialog-body");
     var CalendarDiv = createCalendar(false, activeDay);
     body.appendChild(CalendarDiv);

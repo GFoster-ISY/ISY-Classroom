@@ -1,19 +1,7 @@
 var calendarViewDate;
-var calendarList = {};
 
-function getCalendarDate(date){
-   newCalendar = new Calendar(date);
-   var key = newCalendar.key();
-   if (key in calendarList){
-      return calendarList[key];
-   }
-
-   calendarList[key] = newCalendar;
-   return newCalendar;
-}
-
-function createCalendar(interact){
-   assessmentDetails.getStudentLoad();
+function createCalendar(interact, theAssessment){
+   theAssessment.getStudentLoad();
    var container = document.createElement("div");
    container.classList = "isy-body";
    
@@ -40,7 +28,7 @@ function createCalendar(interact){
    details.innerText = "x classes and y students";
    studentSummary.appendChild(details);
 
-   calendarViewDate = getCalendarDate(activeDay);
+   calendarViewDate = theAssessment.getCalendar(activeDay);
    var calendar = createMonth();
 
    if (interact){
@@ -116,9 +104,9 @@ function createMonth(){
       event.stopImmediatePropagation()
    
       if (event.target.matches('.isy-calendar-month-back') ){
-         calendarViewDate = getCalendarDate(calendarViewDate.prevMonth());
+         calendarViewDate = theAssessment.getCalendar(calendarViewDate.prevMonth());
       } else if (event.target.matches('.isy-calendar-month-forward')){
-         calendarViewDate = getCalendarDate(calendarViewDate.nextMonth());
+         calendarViewDate = theAssessment.getCalendar(calendarViewDate.nextMonth());
       }
       var calendar = createMonth();
       var el = document.querySelector('.isy-calendar');
