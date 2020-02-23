@@ -154,6 +154,13 @@ tr.isy-calendar-date td {
 	position:relative;
 }
 
+.isy-empty-day-container{
+	width: 50px;
+	height: 70px;
+	position:relative;
+	background-color: rgb(217,217,217);
+}
+
 .isy-tt-day {
 	background-color: forestgreen;
 	width: 50px;
@@ -176,11 +183,11 @@ tr.isy-calendar-date td {
 	background-color: lightblue;
 }
 
-.isy-day-1{
+.isy-day-avaialble{
 	background-color: orange;
 }
 
-.isy-day-2{
+.isy-day-busy{
 	background-color: crimson;
 }
 

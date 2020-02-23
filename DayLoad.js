@@ -51,12 +51,12 @@ class DayLoad{
         var available = 0;
         var busy = 0;
         for (var studentID in studentList){
-            if (this._freeStudents.indexOf(studentID) > -1){
-                free++;
-            } else if (this._availableStudents.indexOf(studentID) > -1){
+            if (this._availableStudents.indexOf(studentID) > -1){
                 available++;
             } else if (this._busyStudents.indexOf(studentID) > -1){
                 busy++;
+            } else {
+                free++;
             }
         }
         return [free, available, busy];
@@ -80,7 +80,7 @@ class DayLoad{
     checkStudentLoad(){
         for (var studentID in this.getAssessment().getStudentList()){
             if (studentID in this._studentDetails){
-                if (Object.keys(this._studentDetails[studentID]).length == 1){
+                if (Object.keys(this._studentDetails[studentID]._assessments).length == 1){
                     this._availableStudents.push(studentID);
                 } else {
                     this._busyStudents.push(studentID);

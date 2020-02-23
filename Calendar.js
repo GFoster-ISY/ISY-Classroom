@@ -143,17 +143,29 @@ class Calendar{
 
     addLoadToCalendar(){
         const activeCourse = this.getAssessment().activeCourse;
-        for (var day = 1; day < this._numberOfDays; day++){
+        for (var day = 1; day <= this._numberOfDays; day++){
+            var stats;
             if (this._dayDetails[day]){
-                var stats = this._dayDetails[day].getStats(activeCourse.enrolledStudents);
-                for (var i = 0; i < 3; i++){
-                    const elName = "isy-sal-" + i + "-" + day;
-                    const el = document.getElementById(elName);
-                    el.innerHTML = stats[i];
-                }
+                stats = this._dayDetails[day].getStats(activeCourse.enrolledStudents);
+            } else {
+                stats = [activeCourse.getEnrolledStudentCount(),0,0]; 
+            }
+            for (var i = 0; i < 3; i++){
+                const elName = "isy-sal-" + i + "-" + day;
+                const el = document.getElementById(elName);
+                el.innerHTML = stats[i];
+            }
+            const elName = "isy-day-" + day;
+            const el = document.getElementById(elName);
+            if (stats[2] > 0){
+                el.className = "isy-day isy-day-busy";
+            } else if(stats[1] > 0){
+                el.className = "isy-day isy-day-avaialble";
+            } else {
+                el.className = "isy-day";
             }
         }
-    }
+    } // end of addLoadToCalendar
 
 
 } // end of class Calendar

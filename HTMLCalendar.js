@@ -1,6 +1,8 @@
 var calendarViewDate;
+var theAssessment;
 
-function createCalendar(interact, theAssessment){
+function createCalendar(interact, assessment){
+   theAssessment = assessment;
    theAssessment.getStudentLoad();
    var container = document.createElement("div");
    container.classList = "isy-body";
@@ -121,15 +123,21 @@ function createDay(day){
    var activeDay = calendarViewDate.day;
    //loadStats = calendarViewDate.getStats(day);
    var loadStats = ['?','?','?'];
-   var cell = '<div class=isy-day-container><div id="isy-tt-day-"' + day + ' class="isy-tt-day"></div>';
-   if (day == activeDay){
-      cell += '<div id="isy-selected-day-' + day + '" class="isy-selected-day">' + day + '</div>';
+   var cell;
+   if (day != ""){
+      cell = '<div class=isy-day-container><div id="isy-tt-day-"' + day + ' class="isy-tt-day"></div>';
+      if (day == activeDay){
+         cell += '<div id="isy-selected-day-' + day + '" class="isy-selected-day">' + day + '</div>';
+      } else {
+         cell += '<div id="isy-selected-day-' + day + '" class="isy-selected-day isy-hidden">' + day + '</div>';
+      }
+      cell += '<div id="isy-day-' + day + '" class="isy-day">' + day + '</div>';
+      cell += '<div id="isy-sal-0-' + day + '" class="isy-sal-0">' + loadStats[0] + '</div>';
+      cell += '<div id="isy-sal-1-' + day + '" class="isy-sal-1">' + loadStats[1] + '</div>';
+      cell += '<div id="isy-sal-2-' + day + '" class="isy-sal-2">' + loadStats[2] + '</div>';   
+      cell += '</div>'
    } else {
-      cell += '<div id="isy-selected-day-' + day + '" class="isy-selected-day isy-hidden">' + day + '</div>';
+      cell = '<div class=isy-empty-day-container>';
    }
-   cell += '<div id="isy-day-' + day + '" class="isy-day">' + day + '</div>';
-   cell += '<div id="isy-sal-0-' + day + '" class="isy-sal-0">' + loadStats[0] + '</div>';
-   cell += '<div id="isy-sal-1-' + day + '" class="isy-sal-1">' + loadStats[1] + '</div>';
-   cell += '<div id="isy-sal-2-' + day + '" class="isy-sal-2">' + loadStats[2] + '</div></div>';
    return cell
 } // end of function createDay()

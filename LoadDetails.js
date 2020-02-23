@@ -29,21 +29,24 @@ class LoadDetails{
     }
 
     storeStudentLoad(load){
-        // parameter: load array {courseID, courseWorkID}
-        var course;
-        if (load[0] in this.getAssessment()._courseList){
-            course = this.getAssessment()._courseList[load[1]];
-        } else {
-            course = new Course(load[1]);
+        // parameter: load is a map {courseID: courseWorkID}
+        for (var courseID in load){
+            var course;
+            if (courseID in this.getAssessment()._courseList){
+                course = this.getAssessment()._courseList[courseID];
+            } else {
+                course = new Course(load[1]);
+                this.getAssessment()._courseList[courseID] = course;
+            }
+    
+            var courseWork;
+            if (load[courseID] in this.getAssessment()._courseWorkList){
+                courseWork = this.getAssessment()._courseWorkList[load[courseID]];
+            } else {
+                courseWork = new CourseWork(load[courseID], course);
+            }
+            this.addAssessment(courseWork);    
         }
-
-        var courseWork;
-        if (load[1] in this.getAssessment()._courseWorkList){
-            courseWork = this.getAssessment()._courseWorkList[load[1]];
-        } else {
-            courseWork = new CourseWork(load[1], course);
-        }
-        this.addAssessment(courseWork);
     } // end of method storeStudentLoad
 
 } // end of class loadDetails
