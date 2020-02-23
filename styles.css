@@ -163,7 +163,6 @@ tr.isy-calendar-date td {
 
 .isy-day{
 	cursor: pointer;
-	background : lightsalmon;
     line-height: 50px;
 	width: 50px;
 	height: 50px;
@@ -191,17 +190,19 @@ tr.isy-calendar-date td {
 
 .isy-selected-day {
 	background-color: cornflowerblue;
-    width: 50px;
-    height: 50px;
+    width: 42px;
+	height: 42px;
+	margin: 4px;
     z-index: 10;
-    opacity: .75;
     border-radius: 50%;
 	position: absolute;
-	top:10px;
+	top:11px;
+    line-height: 42px;
+	color: white;
+	font: bold
 }
 
 .isy-sal-0 {
-	background : red;
 	width: 32%;
 	height: 10px;
     float: left;
@@ -212,7 +213,6 @@ tr.isy-calendar-date td {
 }
 
 .isy-sal-1 {
-	background : green;
 	width: 32%;
 	height: 10px;
     float: left;
@@ -222,7 +222,6 @@ tr.isy-calendar-date td {
 }
 
 .isy-sal-2 {
-	background : blue;
 	width: 32%;
 	height: 10px;
     float: left;

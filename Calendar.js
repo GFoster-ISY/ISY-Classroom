@@ -77,9 +77,10 @@ class Calendar{
     }
     
     getStats(day){
+        const activeCourse = this.getAssessment().activeCourse;
         var stats = ['?','?','?'];
         if (this._dayDetails[day]){
-            stats = this._dayDetails[day].getStats();
+            stats = this._dayDetails[day].getStats(activeCourse.enrolledStudents);
         } else {
             this._displayingCalendar = true; 
         }
@@ -134,19 +135,17 @@ class Calendar{
                 dayLoad = new DayLoad(day, this)
                 this._dayDetails[day] = dayLoad;
             }
-            if (this._displayingCalendar){
-                pollDOMExists(".isy-calendar", false, "addLoadToCalendar", this);
-
-            }
+            dayLoad.storeStudentLoad(load[day])
         }
-        dayLoad.storeStudentLoad(load[day])
-        this._finishedCalculating = true;
+        pollDOMExists(".isy-calendar", false, "addLoadToCalendar", this);
+    this._finishedCalculating = true;
     } // end of method storeStudentLoad
 
     addLoadToCalendar(){
+        const activeCourse = this.getAssessment().activeCourse;
         for (var day = 1; day < this._numberOfDays; day++){
             if (this._dayDetails[day]){
-                var stats = this._dayDetails[day].getStats();
+                var stats = this._dayDetails[day].getStats(activeCourse.enrolledStudents);
                 for (var i = 0; i < 3; i++){
                     const elName = "isy-sal-" + i + "-" + day;
                     const el = document.getElementById(elName);

@@ -43,6 +43,14 @@ class Assessment{
         return newCalendar;
      }
 
+    get activeCourse(){
+        if (this._activeCourse){
+            return this._activeCourse;
+        }else {
+            return this.setActiveCourse();
+        }
+    }
+    
     setActiveCourse(){
         // Scrape the active class name from the HTML
         const courseSelector = "a[target=\"_blank\"][data-focus-id] span";

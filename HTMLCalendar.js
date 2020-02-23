@@ -119,13 +119,13 @@ function createMonth(){
 
 function createDay(day){
    var activeDay = calendarViewDate.day;
-   loadStats = calendarViewDate.getStats(day);
-
+   //loadStats = calendarViewDate.getStats(day);
+   var loadStats = ['?','?','?'];
    var cell = '<div class=isy-day-container><div id="isy-tt-day-"' + day + ' class="isy-tt-day"></div>';
    if (day == activeDay){
-      cell += '<div id="isy-selected-day-' + day + '" class="isy-selected-day"></div>';
+      cell += '<div id="isy-selected-day-' + day + '" class="isy-selected-day">' + day + '</div>';
    } else {
-      cell += '<div id="isy-selected-day-' + day + '" class="isy-selected-day isy-hidden"></div>';
+      cell += '<div id="isy-selected-day-' + day + '" class="isy-selected-day isy-hidden">' + day + '</div>';
    }
    cell += '<div id="isy-day-' + day + '" class="isy-day">' + day + '</div>';
    cell += '<div id="isy-sal-0-' + day + '" class="isy-sal-0">' + loadStats[0] + '</div>';

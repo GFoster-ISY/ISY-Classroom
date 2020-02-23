@@ -8,6 +8,10 @@ class Course extends SALObject{
         this.studentList[student.id] = student;
     }
 
+    get enrolledStudents() {
+        return this.studentList;
+    }
+
     getEnrolledStudentCount() {
         return Object.keys(this.studentList).length;
     }
