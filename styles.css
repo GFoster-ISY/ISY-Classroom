@@ -206,7 +206,7 @@ tr.isy-calendar-date td {
 	top:11px;
     line-height: 42px;
 	color: white;
-	font: bold
+	font-weight: bold;
 }
 
 .isy-sal-0 {

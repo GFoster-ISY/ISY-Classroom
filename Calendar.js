@@ -1,5 +1,9 @@
 class Calendar{
 
+    static months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+    static shortMonths = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+    static days = ["S","M","T","W","T","F","S"];
+
     constructor(date, theAssessment){
         this._workingDate = date;
         this._assessment = theAssessment;
@@ -144,50 +148,30 @@ class Calendar{
     addLoadToCalendar(){
         const activeCourse = this.getAssessment().activeCourse;
         for (var day = 1; day <= this._numberOfDays; day++){
-            var stats;
-            if (this._dayDetails[day]){
-                stats = this._dayDetails[day].getStats(activeCourse.enrolledStudents);
-            } else {
-                stats = [activeCourse.getEnrolledStudentCount(),0,0]; 
-            }
-            for (var i = 0; i < 3; i++){
-                const elName = "isy-sal-" + i + "-" + day;
+            if (activeCourse){
+                var stats;
+                if (this._dayDetails[day]){
+                    stats = this._dayDetails[day].getStats(activeCourse.enrolledStudents);
+                } else {
+                    stats = [activeCourse.getEnrolledStudentCount(),0,0]; 
+                }
+                for (var i = 0; i < 3; i++){
+                    const elName = "isy-sal-" + i + "-" + day;
+                    const el = document.getElementById(elName);
+                    el.innerHTML = stats[i];
+                }
+                const elName = "isy-day-" + day;
                 const el = document.getElementById(elName);
-                el.innerHTML = stats[i];
-            }
-            const elName = "isy-day-" + day;
-            const el = document.getElementById(elName);
-            if (stats[2] > 0){
-                el.className = "isy-day isy-day-busy";
-            } else if(stats[1] > 0){
-                el.className = "isy-day isy-day-avaialble";
-            } else {
-                el.className = "isy-day";
+                if (stats[2] > 0){
+                    el.className = "isy-day isy-day-busy";
+                } else if(stats[1] > 0){
+                    el.className = "isy-day isy-day-avaialble";
+                } else {
+                    el.className = "isy-day";
+                }
             }
         }
     } // end of addLoadToCalendar
 
 
 } // end of class Calendar
-
-
-Calendar.months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-Calendar.shortMonths = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-Calendar.days = ["S","M","T","W","T","F","S"];
-
-var activeDay = null;
-function getActiveDate(n){
-    if (activeDay == null){
-        activeDay = new Calendar(new Date()).addSchoolDays(n);
-    }
-    return activeDay;
-}
-
-function getCurrentMonth(){
-    getActiveDate(2); // TODO get the 2 from a user defined parameter
-    return Calendar.months[activeDay.getMonth()];
- }
-
-function getCalendarKey(date){
-    return date.getFullYear() * 100 + date.getMonth();
-}

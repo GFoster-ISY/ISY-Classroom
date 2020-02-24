@@ -5,7 +5,7 @@
    var dateInputSelector = "[aria-label='Due date & time'] input";
    var datePopupSelector = "table[role=presentation]";
    var studentDetailsSelector = ".isy-studentDetails"
-   var theAssessment = new Assessment(getCurrentMonth());
+   var theAssessment = new Assessment();
    var calendarDialog = createCalendarDialog();
 
     function extendDateSelector(calendarTable){
@@ -89,39 +89,3 @@
 
    waitForLoad();
 })();
-
-function pollDOMExists (selector, success, callback, object = null){
-   const el = document.querySelector(selector);
-   if (el != null) {
-      if (!success){
-         if (object != null){
-            object[callback](el);
-         } else {
-            callback(el);
-         }
-         success = true;
-      }
-   } else {
-      success = false;
-   }
-   setTimeout(pollDOMExists, 300, selector, success, callback, object);
-}
-
-function pollDOMShown (selector, success, callback){
-   const el = document.querySelector(selector);
-   var hidden = false;
-   if (el != null) {
-      const parent = el.parentNode
-      hidden =  window.getComputedStyle(parent).display === "none";
-   }
-   
-   if (hidden){
-      success = false;
-   } else {
-      if (!success){
-         callback(el);
-         success = true;
-      }
-   }
-   setTimeout(pollDOMShown, 300, selector, success, callback);
-}

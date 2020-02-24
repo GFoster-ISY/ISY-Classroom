@@ -1,4 +1,4 @@
-var theAssessment = new Assessment(getCurrentMonth());
+var theAssessment = new Assessment();
 
 function loadCalendar(){
     const body = document.querySelector(".isy-dialog-body");

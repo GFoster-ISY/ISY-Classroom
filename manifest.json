@@ -9,7 +9,9 @@
 },
 "content_scripts":[ {
    "css": [ "styles.css" ],
-   "js" : ["SALObject.js",
+   "js" : ["utility.js",
+           "SALDataInterchange.js",
+           "SALObject.js",
            "DayLoad.js",
            "LoadDetails.js",
            "CourseWork.js", 
