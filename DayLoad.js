@@ -78,7 +78,7 @@ class DayLoad{
     }
 
     checkStudentLoad(){
-        for (var studentID in this.getAssessment().getStudentList()){
+        for (var studentID in this.getAssessment().studentList){
             if (studentID in this._studentDetails){
                 if (Object.keys(this._studentDetails[studentID]._assessments).length == 1){
                     this._availableStudents.push(studentID);

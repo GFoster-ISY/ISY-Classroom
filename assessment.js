@@ -1,11 +1,10 @@
 class Assessment{
 
     constructor(){
+        // Force Assessment to be a singleton class
         if (Assessment._instance){
-            console.log("Assessment Constructor already exists");
             return Assessment._instance;
         }
-        console.log("Assessment Constructor initialising");
         Assessment._instance = this;
 
         this._month = getCurrentMonth();
@@ -31,10 +30,14 @@ class Assessment{
         return this._studentDataReceived
     }
 
+    getCourse(id){
+        return this._courseList[id];
+    }
+
     getStudent(id){
         return this._studentList[id];
     }
-    getStudentList(){
+    get studentList(){
         return this._studentList;
     }
 

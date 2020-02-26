@@ -15,11 +15,19 @@ class Course extends SALObject{
     getEnrolledStudentCount() {
         return Object.keys(this.studentList).length;
     }
-    createStudentList(listOfStudentsInAssessment, studentList){
-        for (var id in studentList){
-            var student = new Student(id, studentList[id]);
+    createStudentList(newStudentList){
+        var theAssessment = new Assessment();
+        var allStudents = theAssessment.studentList;
+
+        for (var id in newStudentList){
+            var student;
+            if (id in allStudents){
+                student = allStudents[id];
+            } else {
+                student = new Student(id, newStudentList[id]);
+                allStudents[id] = student;
+            }
             this.studentList[id] = student;
-            listOfStudentsInAssessment[id] = student;
         }
     }
 

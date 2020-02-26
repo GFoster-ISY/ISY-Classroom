@@ -42,22 +42,22 @@ function storeStudentList(xhttp){
         var list = JSON.parse(xhttp.responseText);
         var theAssessment = new Assessment();
         for (var c in list){
-            var course =  theAssessment._courseList[c];
-            course.createStudentList(theAssessment._studentList, list[c]);
+            var course =  theAssessment.getCourse(c);
+            course.createStudentList(list[c]);
         }
         this._studentDataReceived = true;
-        loadStudentWorkLoadList(theAssessment._studentList);
+        loadStudentWorkLoadList();
     }
 }
 
-function loadStudentWorkLoadList(list){
+function loadStudentWorkLoadList(){
     var url  = this.URL + "assessment_load";
     // get the active month
     getActiveDate();
     url += "&&month=" + getCurrentMonth();
     // get a list of student ids
     var theAssessment = new Assessment();
-    var ids = Object.keys(theAssessment._studentList);
+    var ids = Object.keys(theAssessment.studentList);
     url += "&&ids=" + JSON.stringify(ids);
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange=function () {
