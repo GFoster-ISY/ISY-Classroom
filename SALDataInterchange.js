@@ -14,9 +14,9 @@ function loadCourseList(){
 function storeCourseList(xhttp){
     if (xhttp.readyState == 4 && xhttp.status == 200) {
         var list = JSON.parse(xhttp.responseText);
+        var theAssessment = new Assessment();
         for (var id in list){
             var course =  new Course(id, list[id]);
-            var theAssessment = new Assessment();
             theAssessment._courseList[id] = course;
             theAssessment._courseIds.push(id);
         }
@@ -71,7 +71,27 @@ function storeStudentWorkLoad(xhttp){
     if (xhttp.readyState == 4 && xhttp.status == 200) {
         var theAssessment = new Assessment();
         var list = JSON.parse(xhttp.responseText);
-        var calendar = theAssessment.getCalendar(getActiveDate());
+        var calendar = theAssessment.getCalendar();
         calendar.storeStudentLoad(list);
+    }
+}
+
+function loadSchoolDays(){
+    // Get a list of school days
+    var url = this.URL + "calendar";
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange=function () {
+        storeSchoolDays(this);
+    };
+    xhttp.open("POST", url, true);
+    xhttp.send();
+}
+
+function storeSchoolDays(xhttp){
+    if (xhttp.readyState == 4 && xhttp.status == 200) {
+        var theAssessment = new Assessment();
+        var list = JSON.parse(xhttp.responseText);
+        theAssessment.saveSchoolDays(list);
+        calendarDialog = createCalendarDialog();
     }
 }

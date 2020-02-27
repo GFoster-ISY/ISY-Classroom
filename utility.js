@@ -51,3 +51,19 @@ function getCurrentMonth(){
 function getCalendarKey(date){
     return date.getFullYear() * 100 + date.getMonth();
 }
+
+function prevMonth(date){
+   var prev = new Date(date.getFullYear(), date.getMonth(), 0);
+   if (prev.getDate() < date.getDate()){
+       return prev;
+   }
+   return new Date(date.getFullYear(), date.getMonth() - 1, date.getDate());
+}
+
+function nextMonth(date){
+   var next = new Date(date.getFullYear(), date.getMonth()+2, 0);
+   if (next.getDate() < date.getDate()){
+       return next;
+   }
+   return new Date(date.getFullYear(), date.getMonth() + 1, date.getDate());
+}

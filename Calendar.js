@@ -60,21 +60,7 @@ class Calendar{
         return true;
     }
 
-    prevMonth(){
-        var prev = new Date(this._year, this._month, 0);
-        if (prev.getDate() < this._day){
-            return prev;
-        }
-        return new Date(this._year, this._month - 1, this._day);
-    }
 
-    nextMonth(){
-        var next = new Date(this._year, this._month+2, 0);
-        if (next.getDate() < this._day){
-            return next;
-        }
-        return new Date(this._year, this._month + 1, this._day);
-    }
 
     key(){
         return this._year * 100 + this._month;
@@ -142,7 +128,7 @@ class Calendar{
             dayLoad.storeStudentLoad(load[day])
         }
         pollDOMExists(".isy-calendar", false, "addLoadToCalendar", this);
-    this._finishedCalculating = true;
+        this._finishedCalculating = true;
     } // end of method storeStudentLoad
 
     addLoadToCalendar(){
@@ -163,12 +149,10 @@ class Calendar{
                 const elName = "isy-day-" + day;
                 const el = document.getElementById(elName);
                 if (stats[2] > 0){
-                    el.className = "isy-day isy-day-busy";
+                    el.className += " isy-day-busy";
                 } else if(stats[1] > 0){
-                    el.className = "isy-day isy-day-avaialble";
-                } else {
-                    el.className = "isy-day";
-                }
+                    el.className += " isy-day-avaialble";
+                } 
             }
         }
     } // end of addLoadToCalendar

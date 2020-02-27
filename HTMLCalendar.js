@@ -1,8 +1,60 @@
 var calendarViewDate;
-var theAssessment;
+var calendarDialog = null;
 
-function createCalendar(interact, assessment){
-   theAssessment = assessment;
+function createCalendarDialog(){
+   var dialog = createDialog(
+      "ISY SUMMATIVE ASSIGNMENT",
+      "isy-medium-logo",
+      closeCalendarAction
+   );
+   var CalendarDiv = createCalendar(true);
+   dialog.body.appendChild(CalendarDiv);
+
+   return dialog;
+}
+function createDialog(title, iconClass, closeAction) {
+   var div = document.createElement("div");
+   div.classList = "isy-dialog";
+
+   var header = document.createElement("div");
+   header.classList = "isy-dialog-header";
+   div.appendChild(header);
+
+   var icon = document.createElement("i");
+   icon.classList = iconClass;
+   header.appendChild(icon);
+
+   var titleEl = document.createElement("span");
+   titleEl.classList = "isy-dialog-header-title";
+   titleEl.innerText = title;
+
+   header.appendChild(titleEl);
+
+   var closebtn = document.createElement("span");
+   closebtn.classList = "isy-dialog-close-button";
+   closebtn.innerHTML = "&times;";
+   closebtn.onclick = function() {
+      closeAction(div);
+   };
+   header.appendChild(closebtn);
+
+   var body = document.createElement("div");
+   body.classList = "isy-dialog-body";
+   div.appendChild(body);
+
+   return {
+      body: body,
+      node: div
+   };
+}
+
+function closeCalendarAction(div){
+   div.parentNode.style.display = 'none';
+}
+
+
+function createCalendar(interact){
+   theAssessment = new Assessment();
    theAssessment.getStudentLoad();
    var container = document.createElement("div");
    container.classList = "isy-body";
@@ -30,7 +82,6 @@ function createCalendar(interact, assessment){
    details.innerText = "x classes and y students";
    studentSummary.appendChild(details);
 
-   calendarViewDate = theAssessment.getCalendar(activeDay);
    var calendar = createMonth();
 
    if (interact){
@@ -43,6 +94,13 @@ function createCalendar(interact, assessment){
 }
 
 function createMonth(){
+   var theAssessment = new Assessment();
+   var calendarViewDate;
+   if (calendar == null){
+      calendarViewDate = theAssessment.getCalendar();
+   } else {
+      calendarViewDate = calendar;
+   }
    var yearText = calendarViewDate.year;
    var monthText = calendarViewDate.monthText;
    var monthData = calendarViewDate.calendarArray;
@@ -90,7 +148,7 @@ function createMonth(){
       for (var j = 0; j < columnCount; j++) {
             var cell = row.insertCell(-1);
             var day = monthData[i][j];
-            cell.innerHTML = createDay(day);
+            cell.innerHTML = createDay(calendarViewDate.day, calendarViewDate.year, calendarViewDate.month, day);
       }
    }
    
@@ -105,10 +163,11 @@ function createMonth(){
       // Don't bubble the event (without this paging through the months happens multiple times)
       event.stopImmediatePropagation()
    
+      var calendarViewDate = theAssessment.getCalendar();
       if (event.target.matches('.isy-calendar-month-back') ){
-         calendarViewDate = theAssessment.getCalendar(calendarViewDate.prevMonth());
+         theAssessment.prevMonth();
       } else if (event.target.matches('.isy-calendar-month-forward')){
-         calendarViewDate = theAssessment.getCalendar(calendarViewDate.nextMonth());
+         theAssessment.nextMonth();
       }
       var calendar = createMonth();
       var el = document.querySelector('.isy-calendar');
@@ -119,19 +178,32 @@ function createMonth(){
    return container;
 } // end of function createMonth()
 
-function createDay(day){
-   var activeDay = calendarViewDate.day;
+function createDay(activeDay, year, month, day){
+   var theAssessment = new Assessment();
    //loadStats = calendarViewDate.getStats(day);
    var loadStats = ['?','?','?'];
    var cell;
    if (day != ""){
-      cell = '<div class=isy-day-container><div id="isy-tt-day-"' + day + ' class="isy-tt-day"></div>';
+      var ttDay = theAssessment.getSchoolDay(year, month, day);
+      var cssTTDayColour;
+      var cssDayColour;
+      if (ttDay == "Day 1"){
+         cssTTDayColour = "isy-day-1"
+      } else if (ttDay == "Day 2"){
+            cssTTDayColour = "isy-day-2"
+      } else if (ttDay == "Holiday"){
+         cssTTDayColour = "isy-holiday";
+         cssDayColour = "isy-holiday";
+      } else if (ttDay == "Day 0"){
+         cssTTDayColour = "isy-day-0";
+      }
+      cell = '<div class=isy-day-container><div id="isy-tt-day-"' + day + ' class="isy-tt-day '+ cssTTDayColour +'">'+ ttDay +'</div>';
       if (day == activeDay){
          cell += '<div id="isy-selected-day-' + day + '" class="isy-selected-day">' + day + '</div>';
       } else {
          cell += '<div id="isy-selected-day-' + day + '" class="isy-selected-day isy-hidden">' + day + '</div>';
       }
-      cell += '<div id="isy-day-' + day + '" class="isy-day">' + day + '</div>';
+      cell += '<div id="isy-day-' + day + '" class="isy-day '+ cssDayColour +'">' + day + '</div>';
       cell += '<div id="isy-sal-0-' + day + '" class="isy-sal-0">' + loadStats[0] + '</div>';
       cell += '<div id="isy-sal-1-' + day + '" class="isy-sal-1">' + loadStats[1] + '</div>';
       cell += '<div id="isy-sal-2-' + day + '" class="isy-sal-2">' + loadStats[2] + '</div>';   

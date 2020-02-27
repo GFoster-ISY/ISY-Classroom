@@ -13,10 +13,20 @@ class Assessment{
         this._studentList = {};
         this._studentDataReceived = false;
         this._courseIds = [];
+        this._schoolDays = {};
+        this._nextAssessmentDate = getActiveDate(2);
         this._calendar = {};
         this._activeCourses = {};
         this._activeCourse = null;
         loadCourseList();
+    }
+
+    getSchoolDay (year, month, day){
+        var index = year*10000+(month+1)*100+day;
+        if (index in this._schoolDays){
+            return this._schoolDays[index];
+        }
+        return "";
     }
 
     get month(){
@@ -41,13 +51,21 @@ class Assessment{
         return this._studentList;
     }
 
+    prevMonth(){
+        this._nextAssessmentDate = prevMonth(this._nextAssessmentDate);
+        return this.getCalendar();
+    }
+    nextMonth(){
+        this._nextAssessmentDate = nextMonth(this._nextAssessmentDate);
+        return this.getCalendar();
+    }
 
-    getCalendar(date){
-        var key = getCalendarKey(date);
+    getCalendar(){
+        var key = getCalendarKey(this._nextAssessmentDate);
         if (key in this._calendar){
            return this._calendar[key];
         }
-        var newCalendar = new Calendar(date, this);
+        var newCalendar = new Calendar(this._nextAssessmentDate, this);
         this._calendar[key] = newCalendar;
         return newCalendar;
      }
@@ -75,7 +93,11 @@ class Assessment{
         return this._activeCourse;
     }
 
-
+    saveSchoolDays(list){
+        for (var id in list){
+            this._schoolDays[id] = list[id];
+        }
+    }
 
     getStudentLoad(){
         var month = getCurrentMonth();
