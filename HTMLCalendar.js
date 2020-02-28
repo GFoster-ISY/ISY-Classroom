@@ -1,6 +1,3 @@
-var calendarViewDate;
-var calendarDialog = null;
-
 function createCalendarDialog(){
    var dialog = createDialog(
       "ISY SUMMATIVE ASSIGNMENT",
@@ -48,7 +45,25 @@ function createDialog(title, iconClass, closeAction) {
    };
 }
 
-function closeCalendarAction(div){
+function closeCalendarAction(){
+   var theAssessment = new Assessment();
+
+   
+   var dateText = theAssessment.getCalendar().getDateText();
+   
+   var element = document.querySelector(dateInputSelector);
+   element.value = dateText;
+   
+   element = document.querySelector(timeSelector)
+   element.style.display = 'none';
+   
+   element = document.querySelector(timeInputSelector);
+   if (element.value == "11:59 PM"){
+      element.value = "6:00 pm";
+      element.style.display = 'inline';
+   }
+
+   var div = theAssessment.calendarDisplay.node;
    div.parentNode.style.display = 'none';
 }
 
@@ -157,17 +172,21 @@ function createMonth(){
 
       // If the clicked element doesn't have the right selector, bail
       if (!event.target.matches('.isy-calendar-month-back') &&
-         !event.target.matches('.isy-calendar-month-forward')
+         !event.target.matches('.isy-calendar-month-forward') &&
+         !event.target.matches('.isy-day') &&
+         !event.target.matches('.isy-selected-day')
          ) return;
    
       // Don't bubble the event (without this paging through the months happens multiple times)
       event.stopImmediatePropagation()
    
-      var calendarViewDate = theAssessment.getCalendar();
       if (event.target.matches('.isy-calendar-month-back') ){
          theAssessment.prevMonth();
       } else if (event.target.matches('.isy-calendar-month-forward')){
          theAssessment.nextMonth();
+      } else if (event.target.matches('.isy-day') || event.target.matches('.isy-selected-day')){
+         theAssessment.getCalendar().setWorkingDay(event.target.textContent);
+         closeCalendarAction();
       }
       var calendar = createMonth();
       var el = document.querySelector('.isy-calendar');
@@ -185,8 +204,8 @@ function createDay(activeDay, year, month, day){
    var cell;
    if (day != ""){
       var ttDay = theAssessment.getSchoolDay(year, month, day);
-      var cssTTDayColour;
-      var cssDayColour;
+      var cssTTDayColour = "";
+      var cssDayColour = "";
       if (ttDay == "Day 1"){
          cssTTDayColour = "isy-day-1"
       } else if (ttDay == "Day 2"){

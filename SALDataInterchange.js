@@ -1,5 +1,25 @@
 var URL = "https://script.google.com/a/isyedu.org/macros/s/AKfycbw1cM8fnqav_mnJVLOC6F_h2U1dme7KhtE5l-rmioM/dev?action=";
 
+function loadSchoolDays(){
+    // Get a list of school days
+    var url = this.URL + "calendar";
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange=function () {
+        storeSchoolDays(this);
+    };
+    xhttp.open("POST", url, true);
+    xhttp.send();
+}
+
+function storeSchoolDays(xhttp){
+    if (xhttp.readyState == 4 && xhttp.status == 200) {
+        var theAssessment = new Assessment();
+        var list = JSON.parse(xhttp.responseText);
+        theAssessment.saveSchoolDays(list);
+        theAssessment.calendarDisplay = createCalendarDialog();
+    }
+}
+
 function loadCourseList(){
     // Get a list of all courses
     var url = this.URL + "course";
@@ -73,25 +93,5 @@ function storeStudentWorkLoad(xhttp){
         var list = JSON.parse(xhttp.responseText);
         var calendar = theAssessment.getCalendar();
         calendar.storeStudentLoad(list);
-    }
-}
-
-function loadSchoolDays(){
-    // Get a list of school days
-    var url = this.URL + "calendar";
-    var xhttp = new XMLHttpRequest();
-    xhttp.onreadystatechange=function () {
-        storeSchoolDays(this);
-    };
-    xhttp.open("POST", url, true);
-    xhttp.send();
-}
-
-function storeSchoolDays(xhttp){
-    if (xhttp.readyState == 4 && xhttp.status == 200) {
-        var theAssessment = new Assessment();
-        var list = JSON.parse(xhttp.responseText);
-        theAssessment.saveSchoolDays(list);
-        calendarDialog = createCalendarDialog();
     }
 }

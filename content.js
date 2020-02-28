@@ -1,10 +1,6 @@
 ( function () {
 	"use strict";
 	
-   var dateSelector = "[aria-label='Due date & time']";
-   var dateInputSelector = "[aria-label='Due date & time'] input";
-   var datePopupSelector = "table[role=presentation]";
-   var studentDetailsSelector = ".isy-studentDetails"
    var theAssessment = new Assessment();
    
 
@@ -14,7 +10,7 @@
       title.classList.add("isy-injection");
       var calendarPopup = calendarTable.parentNode;
       calendarPopup.innerHTML = "";
-      calendarPopup.appendChild(calendarDialog.node);
+      calendarPopup.appendChild(theAssessment.calendarDisplay.node);
       pollDOMShown(".isy-dialog", false, getStudentLoad);
    }
   

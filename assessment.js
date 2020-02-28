@@ -18,9 +18,18 @@ class Assessment{
         this._calendar = {};
         this._activeCourses = {};
         this._activeCourse = null;
+        this._calendarDisplay = {body: null, node: null}; // this will be set up in SALDataInterchange::storeSchoolDays()
         loadCourseList();
     }
 
+    get calendarDisplay(){
+        return this._calendarDisplay;
+    }
+
+    set calendarDisplay(display){
+        this._calendarDisplay = display;
+    }
+    
     getSchoolDay (year, month, day){
         var index = year*10000+(month+1)*100+day;
         if (index in this._schoolDays){

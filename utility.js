@@ -1,3 +1,10 @@
+var dateSelector = "[aria-label='Due date & time']";
+var dateInputSelector = "[aria-label='Due date & time'] input";
+var timeSelector = "[aria-label='Add due time']";
+var timeInputSelector = "[aria-label='Due time']";
+var datePopupSelector = "table[role=presentation]";
+var studentDetailsSelector = ".isy-studentDetails"
+
 function pollDOMExists (selector, success, callback, object = null){
     const el = document.querySelector(selector);
     if (el != null) {

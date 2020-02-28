@@ -5,14 +5,28 @@ class Calendar{
     static days = ["S","M","T","W","T","F","S"];
 
     constructor(date, theAssessment){
-        this._workingDate = date;
+        this.workingDate = date;
         this._assessment = theAssessment;
-        this._year = date.getFullYear();
         this._numberOfDays;
         this.getMonthData(date);
         this._dayDetails = {};
         this._finishedCalculating = false;
         this._displayingCalendar = false;
+    }
+
+    get workingDate(){
+        return this._workingDate
+    }
+
+    setWorkingDay(day){
+        this.workingDate = new Date (this._year, this._month, day);
+    }
+
+    set workingDate (date){
+        this._workingDate = date;
+        this._year = date.getFullYear();
+        this._month = date.getMonth();
+        this._monthText = Calendar.months[this._month];
         this._day = date.getDate();
     }
 
@@ -30,6 +44,10 @@ class Calendar{
 
     get day(){
         return this._day;
+    }
+
+    set day(day){
+        this._day = day;
     }
 
     get monthText(){
@@ -82,8 +100,6 @@ class Calendar{
     }
     
     getMonthData(date){
-        this._month = date.getMonth();
-        this._monthText = Calendar.months[this._month];
         var monthData = [];
         monthData.push(Calendar.days);
         var firstDay = new Date(date.getFullYear(), this._month, 1);
