@@ -70,7 +70,7 @@ function closeCalendarAction(){
 
 function createCalendar(interact){
    theAssessment = new Assessment();
-   theAssessment.getStudentLoad();
+//   theAssessment.getStudentLoad();
    var container = document.createElement("div");
    container.classList = "isy-body";
    
@@ -111,6 +111,8 @@ function createCalendar(interact){
 function createMonth(){
    var theAssessment = new Assessment();
    var calendarViewDate;
+   // ***********
+   // WHY the if (calendar ==  null)
    if (calendar == null){
       calendarViewDate = theAssessment.getCalendar();
    } else {
@@ -187,10 +189,12 @@ function createMonth(){
       } else if (event.target.matches('.isy-day') || event.target.matches('.isy-selected-day')){
          theAssessment.getCalendar().setWorkingDay(event.target.textContent);
          closeCalendarAction();
+         return;
       }
       var calendar = createMonth();
       var el = document.querySelector('.isy-calendar');
       el.parentNode.replaceChild(calendar, el);
+      theAssessment.getCalendar().addLoadToCalendar();
    
    }, false);
 
@@ -199,7 +203,7 @@ function createMonth(){
 
 function createDay(activeDay, year, month, day){
    var theAssessment = new Assessment();
-   //loadStats = calendarViewDate.getStats(day);
+//   var loadStats = theAssessment.getCalendar().getStats(day);
    var loadStats = ['?','?','?'];
    var cell;
    if (day != ""){

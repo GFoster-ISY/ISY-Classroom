@@ -41,19 +41,29 @@ function pollDOMExists (selector, success, callback, object = null){
     setTimeout(pollDOMShown, 300, selector, success, callback);
  }
 
- 
-var activeDay = null;
-function getActiveDate(n){
-    if (activeDay == null){
-        activeDay = new Calendar(new Date()).addSchoolDays(n);
-    }
-    return activeDay;
+function isEmpty(obj) {
+   for(var key in obj) {
+       if(obj.hasOwnProperty(key))
+           return false;
+   }
+   return true;
 }
 
-function getCurrentMonth(){
-    getActiveDate(2); // TODO get the 2 from a user defined parameter
-    return Calendar.months[activeDay.getMonth()];
- }
+// var activeDay = null;
+// function getActiveDate(n){
+//     if (activeDay == null){
+//         activeDay = new Calendar(new Date()).addSchoolDays(n);
+//     }
+//     return activeDay;
+// }
+
+//function getCurrentMonth(){
+//     getActiveDate(2); // TODO get the 2 from a user defined parameter
+    
+//     var theAssessment = new Assessment();
+//     var activeDay = theAssessment.activeDay;
+//     return Calendar.months[activeDay.getMonth()];
+//  }
 
 function getCalendarKey(date){
     return date.getFullYear() * 100 + date.getMonth();

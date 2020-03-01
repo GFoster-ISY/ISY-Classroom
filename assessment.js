@@ -7,19 +7,27 @@ class Assessment{
         }
         Assessment._instance = this;
 
-        this._month = getCurrentMonth();
+        this._nextAssessmentDate = this.initActiveDay();
         this._courseList = {};
         this._courseWorkList = {};
         this._studentList = {};
         this._studentDataReceived = false;
         this._courseIds = [];
         this._schoolDays = {};
-        this._nextAssessmentDate = getActiveDate(2);
         this._calendar = {};
         this._activeCourses = {};
         this._activeCourse = null;
         this._calendarDisplay = {body: null, node: null}; // this will be set up in SALDataInterchange::storeSchoolDays()
         loadCourseList();
+    }
+
+    get activeDay(){
+        return this._nextAssessmentDate;
+    }
+
+    initActiveDay(){
+        var n = 2; // parameterise the 2
+        return new Calendar(new Date()).addSchoolDays(n)
     }
 
     get calendarDisplay(){
@@ -29,7 +37,7 @@ class Assessment{
     set calendarDisplay(display){
         this._calendarDisplay = display;
     }
-    
+
     getSchoolDay (year, month, day){
         var index = year*10000+(month+1)*100+day;
         if (index in this._schoolDays){
@@ -38,13 +46,6 @@ class Assessment{
         return "";
     }
 
-    get month(){
-        return this._month;
-    }
-
-    set name(month){
-        this._month = month;
-    }
     get studentDataReceived(){
         return this._studentDataReceived
     }
@@ -60,23 +61,40 @@ class Assessment{
         return this._studentList;
     }
 
+    currentMonth(){
+        var calendar = this.getCalendar();
+        return calendar;
+    }
+
     prevMonth(){
         this._nextAssessmentDate = prevMonth(this._nextAssessmentDate);
-        return this.getCalendar();
+        var calendar = this.getCalendar();
+        return calendar;
     }
     nextMonth(){
         this._nextAssessmentDate = nextMonth(this._nextAssessmentDate);
-        return this.getCalendar();
+        var calendar = this.getCalendar();
+        return calendar;
     }
 
-    getCalendar(){
-        var key = getCalendarKey(this._nextAssessmentDate);
-        if (key in this._calendar){
-           return this._calendar[key];
+    getCalendar(month = null){
+        var key;
+        var theDate = this._nextAssessmentDate;
+        var calendar;
+        if (month != null){
+            theDate = new Date(theDate.getFullYear(), Calendar.monthIndex[month]);
         }
-        var newCalendar = new Calendar(this._nextAssessmentDate, this);
-        this._calendar[key] = newCalendar;
-        return newCalendar;
+        key = getCalendarKey(theDate);
+        if (key in this._calendar){
+            calendar = this._calendar[key];
+        } else {
+            calendar = new Calendar(theDate, this);
+            this._calendar[key] = calendar;
+            if (!isEmpty(this.studentList)){
+                loadStudentWorkLoadList();
+            }
+        }
+        return calendar;
      }
 
     get activeCourse(){
@@ -109,6 +127,6 @@ class Assessment{
     }
 
     getStudentLoad(){
-        var month = getCurrentMonth();
+        var month = this.getCalendar().month;
     }
 }

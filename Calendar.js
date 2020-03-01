@@ -1,6 +1,7 @@
 class Calendar{
 
     static months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+    static monthIndex = {"January":0, "February":1, "March":2, "April":3, "May":4, "June":5, "July":6, "August":7, "September":8, "October":9, "November":10, "December":11};
     static shortMonths = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
     static days = ["S","M","T","W","T","F","S"];
 
@@ -11,7 +12,6 @@ class Calendar{
         this.getMonthData(date);
         this._dayDetails = {};
         this._finishedCalculating = false;
-        this._displayingCalendar = false;
     }
 
     get workingDate(){
@@ -87,10 +87,12 @@ class Calendar{
     getStats(day){
         const activeCourse = this.getAssessment().activeCourse;
         var stats = ['?','?','?'];
-        if (this._dayDetails[day]){
-            stats = this._dayDetails[day].getStats(activeCourse.enrolledStudents);
-        } else {
-            this._displayingCalendar = true; 
+        if (this._finishedCalculating && activeCourse){
+            if (this._dayDetails[day]){
+                stats = this._dayDetails[day].getStats(activeCourse.enrolledStudents);
+            } else {
+                stats = [activeCourse.getEnrolledStudentCount(),0,0]; 
+            }
         }
         return stats;
     }
@@ -117,7 +119,7 @@ class Calendar{
         }
         monthData.push(row);
     
-        while (date < this._numberOfDays){
+        while (date <= this._numberOfDays){
            row = [];
            for (var i = 0; i < 7; i++){
               if (date <= this._numberOfDays){
@@ -143,32 +145,29 @@ class Calendar{
             }
             dayLoad.storeStudentLoad(load[day])
         }
-        pollDOMExists(".isy-calendar", false, "addLoadToCalendar", this);
         this._finishedCalculating = true;
+        pollDOMExists(".isy-calendar", false, "addLoadToCalendar", this);
     } // end of method storeStudentLoad
 
     addLoadToCalendar(){
-        const activeCourse = this.getAssessment().activeCourse;
         for (var day = 1; day <= this._numberOfDays; day++){
-            if (activeCourse){
-                var stats;
-                if (this._dayDetails[day]){
-                    stats = this._dayDetails[day].getStats(activeCourse.enrolledStudents);
-                } else {
-                    stats = [activeCourse.getEnrolledStudentCount(),0,0]; 
-                }
-                for (var i = 0; i < 3; i++){
-                    const elName = "isy-sal-" + i + "-" + day;
-                    const el = document.getElementById(elName);
-                    el.innerHTML = stats[i];
-                }
-                const elName = "isy-day-" + day;
+            var stats = this.getStats(day);
+            for (var i = 0; i < 3; i++){
+                const elName = "isy-sal-" + i + "-" + day;
                 const el = document.getElementById(elName);
-                if (stats[2] > 0){
-                    el.className += " isy-day-busy";
-                } else if(stats[1] > 0){
-                    el.className += " isy-day-avaialble";
-                } 
+                if (el == null){
+                    return;
+                }
+                el.innerHTML = stats[i];
+            }
+            const elName = "isy-day-" + day;
+            const el = document.getElementById(elName);
+            if (stats[2] > 0){
+                el.className += " isy-day-busy";
+            } else if(stats[1] > 0){
+                el.className += " isy-day-avaialble";
+            } else {
+                el.className = "isy-day";
             }
         }
     } // end of addLoadToCalendar

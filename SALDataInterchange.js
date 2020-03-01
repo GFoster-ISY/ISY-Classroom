@@ -71,12 +71,11 @@ function storeStudentList(xhttp){
 }
 
 function loadStudentWorkLoadList(){
+    var theAssessment = new Assessment();
     var url  = this.URL + "assessment_load";
     // get the active month
-    getActiveDate();
-    url += "&&month=" + getCurrentMonth();
+    url += "&&month=" + theAssessment.getCalendar().monthText;
     // get a list of student ids
-    var theAssessment = new Assessment();
     var ids = Object.keys(theAssessment.studentList);
     url += "&&ids=" + JSON.stringify(ids);
     var xhttp = new XMLHttpRequest();
@@ -91,7 +90,9 @@ function storeStudentWorkLoad(xhttp){
     if (xhttp.readyState == 4 && xhttp.status == 200) {
         var theAssessment = new Assessment();
         var list = JSON.parse(xhttp.responseText);
-        var calendar = theAssessment.getCalendar();
-        calendar.storeStudentLoad(list);
+        var month = list.month;
+        var load = list.load;
+        var calendar = theAssessment.getCalendar(month);
+        calendar.storeStudentLoad(load);
     }
 }

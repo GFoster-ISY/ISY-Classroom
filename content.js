@@ -17,7 +17,9 @@
    function getStudentLoad(el){
       var dateText = theAssessment.getCalendar().getDateText();
       var element = document.querySelector(dateInputSelector);
-      element.value = dateText;
+      if (element != null){
+         element.value = dateText;
+      }
       // TODO add a dialog box here if the student data hasn't yet been loaded
       if (theAssessment.studentDataReceived){
          const activeCourse = theAssessment.setActiveCourse();
