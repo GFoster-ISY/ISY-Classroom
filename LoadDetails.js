@@ -12,7 +12,6 @@ class LoadDetails{
     getAssessment(){
         return this._dayLoad.getAssessment();
     }
-
     
     addAssessment(courseWork){
         if (!this._assessments.includes(courseWork)){

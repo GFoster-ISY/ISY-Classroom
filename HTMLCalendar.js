@@ -45,7 +45,8 @@ function createDialog(title, iconClass, closeAction) {
    };
 }
 
-function closeCalendarAction(){
+function closeCalendarAction(div){
+   console.log("In closeCalendarAction: " + div);
    var theAssessment = new Assessment();
 
    
@@ -54,6 +55,9 @@ function closeCalendarAction(){
    var element = document.querySelector(dateInputSelector);
    element.value = dateText;
    
+   element = document.querySelector(dateInputLabel);
+   element.innerHTML = dateText;
+
    element = document.querySelector(timeSelector)
    element.style.display = 'none';
    
@@ -176,20 +180,31 @@ function createMonth(){
       if (!event.target.matches('.isy-calendar-month-back') &&
          !event.target.matches('.isy-calendar-month-forward') &&
          !event.target.matches('.isy-day') &&
-         !event.target.matches('.isy-selected-day')
+         !event.target.matches('.isy-selected-day') &&
+         !event.target.matches('.isy-sal-more')
          ) return;
    
       // Don't bubble the event (without this paging through the months happens multiple times)
       event.stopImmediatePropagation()
    
-      if (event.target.matches('.isy-calendar-month-back') ){
+      if (event.target.matches('.isy-sal-more')){
+         var day = event.target.id.substr(10);
+         displaySALDetails(day);
+         return;
+      } else if (event.target.matches('.isy-day') || event.target.matches('.isy-selected-day')){
+         var day = theAssessment.getCalendar().day;
+         var el = document.getElementById('isy-selected-day-'+day);
+         el.style.visibility = 'hidden';
+         theAssessment.getCalendar().setWorkingDay(event.target.textContent);
+         var day = theAssessment.getCalendar().day;
+         var el = document.getElementById('isy-selected-day-'+day);
+         el.style.visibility = 'visible';
+         closeCalendarAction();
+         return;
+      } else if (event.target.matches('.isy-calendar-month-back') ){
          theAssessment.prevMonth();
       } else if (event.target.matches('.isy-calendar-month-forward')){
          theAssessment.nextMonth();
-      } else if (event.target.matches('.isy-day') || event.target.matches('.isy-selected-day')){
-         theAssessment.getCalendar().setWorkingDay(event.target.textContent);
-         closeCalendarAction();
-         return;
       }
       var calendar = createMonth();
       var el = document.querySelector('.isy-calendar');
@@ -236,3 +251,108 @@ function createDay(activeDay, year, month, day){
    }
    return cell
 } // end of function createDay()
+
+function closeSALDetailsAction(div){
+   console.log("In closeSALDetailsAction: " + div);
+   var div = theAssessment.SALDetailsDisplay.node;
+   var cdiv = theAssessment.calendarDisplay.node;
+   cdiv.parentNode.style.display = 'block';
+   cdiv.parentNode.style.visibility = "visible";
+   var element = document.querySelector(dateSelector);
+   element.style.display = 'block';
+   element.style.visibility = "visible";
+   
+   div.style.visibility = 'hidden';   
+}
+
+function displaySALDetails(day){
+   var div = SALDetails (day);
+   var el = document.querySelector('.isy-SAL-details');
+   if (el){
+      theAssessment.SALDetailsDisplay.body.replaceChild(div, el);
+   } else {
+      theAssessment.SALDetailsDisplay.body.appendChild(div);
+   }
+   theAssessment.SALDetailsDisplay.node.style.display = 'block';
+   theAssessment.SALDetailsDisplay.node.style.visibility = "visible";
+} // end of function displaySALDetails
+
+function SALDetails(day){
+   var container = document.createElement("div");
+   container.classList = "isy-SAL-details";
+
+   var details = document.createElement('table');
+   details.border = "1";
+   details.style.borderCollapse = "collapse";
+   details.classList = "isy-SAL-details-table"
+
+   //Add the SAL Details header row.
+   var row = details.insertRow(-1);
+   row.classList = "isy-SAL-details-header";
+   var headerCell = document.createElement("TH");
+   headerCell.innerHTML = "Student Name";
+   row.appendChild(headerCell);
+   var headerCell = document.createElement("TH");
+   headerCell.innerHTML = "Load";
+   row.appendChild(headerCell);
+   var headerCell = document.createElement("TH");
+   headerCell.innerHTML = "Course Details";
+   row.appendChild(headerCell);
+
+   //Add the data rows.
+   var dayDetails = theAssessment.getCalendar()._dayDetails[day];
+   var busy = dayDetails.busyStudentList();
+   for (var id = 0; id < busy.length; id++) {
+      var studentID = busy[id];
+      var SALdetails  = dayDetails.getStudentDetails(studentID);
+      row = details.insertRow(-1);
+      row.classList = "isy-SAL-details-busy";
+      var cell = row.insertCell(-1);
+      cell.innerHTML = "<p>"+SALdetails.name+"</p>";
+      var cell = row.insertCell(-1);
+      cell.innerHTML = "<p>"+SALdetails.load+"</p>";
+      var cell = row.insertCell(-1);
+      if (SALdetails.details.length){
+         cell.innerHTML = "<p>";
+         for (var a = 0; a < SALdetails.details.length-1; a++){
+            var workLoadString = SALdetails.details[a].name;
+            cell.innerHTML += workLoadString+", ";
+         }
+         var workLoadString = SALdetails.details[SALdetails.details.length-1].name;
+         cell.innerHTML += workLoadString+"</p>";
+      }
+   }
+
+   var available = dayDetails.availableStudentList();
+   for (var id = 0; id < available.length; id++) {
+      var studentID = available[id];
+      var SALdetails  = dayDetails.getStudentDetails(studentID);
+      row = details.insertRow(-1);
+      row.classList = "isy-SAL-details-available";
+      var cell = row.insertCell(-1);
+      cell.innerHTML = "<p>"+SALdetails.name+"</p>";
+      var cell = row.insertCell(-1);
+      cell.innerHTML = "<p>"+SALdetails.load+"</p>";
+      var cell = row.insertCell(-1);
+      for (var a = 0; a < SALdetails.details.length; a++){
+         var workLoadString = SALdetails.details[a].name;
+         cell.innerHTML += "<p>"+workLoadString+"</p>";
+      }
+   }
+
+   var free = dayDetails.freeStudentList();
+   for (var id = 0; id < free.length; id++) {
+      var studentID = free[id];
+      var SALdetails  = dayDetails.getStudentDetails(studentID);
+      row = details.insertRow(-1);
+      row.classList = "isy-SAL-details-free";
+      var cell = row.insertCell(-1);
+      cell.innerHTML = "<p>"+SALdetails.name+"</p>";
+      var cell = row.insertCell(-1);
+      cell.innerHTML = "<p>"+SALdetails.load+"</p>";
+      var cell = row.insertCell(-1);
+   }
+
+   container.appendChild(details);
+   return container;
+}

@@ -4,7 +4,8 @@
    var theAssessment = new Assessment();
    
 
-    function extendDateSelector(calendarTable){
+   function extendDateSelector(calendarTable){
+      document.body.appendChild(theAssessment.SALDetailsDisplay.node);
       var element = document.querySelector(dateSelector);
       var title = element.childNodes[0];
       title.classList.add("isy-injection");

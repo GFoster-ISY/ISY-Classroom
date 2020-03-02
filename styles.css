@@ -217,7 +217,9 @@ tr.isy-calendar-date td {
 	color: white;
 	font-weight: bold;
 }
-
+.isy-sal-more {
+	cursor : help;
+}
 .isy-sal-0 {
 	width: 32%;
 	height: 10px;
@@ -247,6 +249,11 @@ tr.isy-calendar-date td {
 	line-height: 10px;
 }
 
+.isy-SAL-details {
+	overflow:hidden;
+    overflow-y: scroll;
+    height: 600px;
+}
 .clear {
 	clear: both;
 }

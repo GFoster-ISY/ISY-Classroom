@@ -1,5 +1,6 @@
 var dateSelector = "[aria-label='Due date & time']";
 var dateInputSelector = "[aria-label='Due date & time'] input";
+var dateInputLabel = "[aria-label='Due Tomorrow'] div span";
 var timeSelector = "[aria-label='Add due time']";
 var timeInputSelector = "[aria-label='Due time']";
 var datePopupSelector = "table[role=presentation]";

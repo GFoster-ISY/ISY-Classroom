@@ -17,6 +17,7 @@ class Assessment{
         this._calendar = {};
         this._activeCourses = {};
         this._activeCourse = null;
+        this._SALDetailsDisplay = this.initSALDetailsDisplay(); // this will be set up in HTMLCalendar::displaySALDetails()
         this._calendarDisplay = {body: null, node: null}; // this will be set up in SALDataInterchange::storeSchoolDays()
         loadCourseList();
     }
@@ -28,6 +29,24 @@ class Assessment{
     initActiveDay(){
         var n = 2; // parameterise the 2
         return new Calendar(new Date()).addSchoolDays(n)
+    }
+
+    initSALDetailsDisplay(){
+        var dialog = createDialog(
+            "ISY STUDENT ASSESSMENT LOAD Details",
+            "isy-medium-logo",
+            closeSALDetailsAction
+         );
+         dialog.node.style.display = 'none';   
+         return dialog;
+    }
+
+    get SALDetailsDisplay(){
+        return this._SALDetailsDisplay;
+    }
+
+    set SALDetailsDisplay(display){
+        this._SALDetailsDisplay = display;
     }
 
     get calendarDisplay(){

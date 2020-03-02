@@ -46,6 +46,22 @@ class DayLoad{
         return this._busyStudents;
     }
 
+    getStudentDetails(studentID){
+        var loadDetails = this._studentDetails[studentID];
+        if (loadDetails){
+            var StudentName = loadDetails.student.name;
+            var loadCount = loadDetails.loadTotal;
+            var assessments = loadDetails.loadDetails;
+        } else {
+            var StudentName = studentID;
+            var loadCount = 0;
+            var assessments = "";
+        }
+        return {name : StudentName,
+                load : loadCount,
+                details : assessments};
+    }
+
     getStats(studentList){
         var free = 0;
         var available = 0;

@@ -20,6 +20,7 @@ class Calendar{
 
     setWorkingDay(day){
         this.workingDate = new Date (this._year, this._month, day);
+        this._assessment._nextAssessmentDate = this._workingDate;
     }
 
     set workingDate (date){
@@ -159,6 +160,9 @@ class Calendar{
                     return;
                 }
                 el.innerHTML = stats[i];
+                if (stats[i] != '?'){
+                    el.className += " isy-sal-more";
+                }
             }
             const elName = "isy-day-" + day;
             const el = document.getElementById(elName);
