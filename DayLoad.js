@@ -53,7 +53,7 @@ class DayLoad{
             var loadCount = loadDetails.loadTotal;
             var assessments = loadDetails.loadDetails;
         } else {
-            var StudentName = studentID;
+            var StudentName = theAssessment.activeCourse.enrolledStudents[studentID].name;
             var loadCount = 0;
             var assessments = "";
         }

@@ -1,6 +1,8 @@
 var dateSelector = "[aria-label='Due date & time']";
 var dateInputSelector = "[aria-label='Due date & time'] input";
-var dateInputLabel = "[aria-label='Due Tomorrow'] div span";
+var dateInputLabel = "[aria-label='No due date'] div span";
+// Capture this element in extendDateSelector because Google dynamically changes the aria-label
+var dateInputLabelElement;
 var timeSelector = "[aria-label='Add due time']";
 var timeInputSelector = "[aria-label='Due time']";
 var datePopupSelector = "table[role=presentation]";
@@ -8,6 +10,9 @@ var studentDetailsSelector = ".isy-studentDetails"
 
 function pollDOMExists (selector, success, callback, object = null){
     const el = document.querySelector(selector);
+    if (selector == datePopupSelector){
+      console.log(selector + " " + el + " " + success);
+    }
     if (el != null) {
        if (!success){
           if (object != null){

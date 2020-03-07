@@ -252,8 +252,47 @@ tr.isy-calendar-date td {
 .isy-SAL-details {
 	overflow:hidden;
     overflow-y: scroll;
-    height: 600px;
+	height: 600px;
+	width: 600px;
 }
+
+.isy-SAL-details-table{
+	width:600px;
+	font-size: 12px;
+	text-align: left;
+}
+
+.isy-SAL-details-header{
+	background-color: rgb(222,181,37);
+	font-size: 20px;
+	text-align: center;
+	height: 30px;
+}
+
+.isy-SAL-details-busy{
+	background-color: crimson;
+}
+
+.isy-SAL-details-busy:nth-child(odd){
+	background-color: rgb(242, 115, 140);
+}
+
+.isy-SAL-details-available{
+	background-color: orange;
+}
+
+.isy-SAL-details-available:nth-child(odd){
+	background-color: rgb(255, 219, 153);
+}
+
+.isy-SAL-details-free{
+	background-color: lightgreen;
+}
+
+.isy-SAL-details-free:nth-child(odd){
+	background-color: rgb(189, 236, 189);
+}
+
 .clear {
 	clear: both;
 }

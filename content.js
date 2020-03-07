@@ -5,6 +5,10 @@
    
 
    function extendDateSelector(calendarTable){
+      console.log("In method extendDateSelector()");
+      // Capture this element here because Google dynamically changes the aria-label
+      dateInputLabelElement = document.querySelector(dateInputLabel);
+
       document.body.appendChild(theAssessment.SALDetailsDisplay.node);
       var element = document.querySelector(dateSelector);
       var title = element.childNodes[0];

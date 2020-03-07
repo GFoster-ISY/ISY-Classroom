@@ -8,7 +8,8 @@ function createCalendarDialog(){
    dialog.body.appendChild(CalendarDiv);
 
    return dialog;
-}
+} // end of function createCalendarDialog
+
 function createDialog(title, iconClass, closeAction) {
    var div = document.createElement("div");
    div.classList = "isy-dialog";
@@ -43,7 +44,7 @@ function createDialog(title, iconClass, closeAction) {
       body: body,
       node: div
    };
-}
+} // end of function createDialog
 
 function closeCalendarAction(div){
    console.log("In closeCalendarAction: " + div);
@@ -55,8 +56,7 @@ function closeCalendarAction(div){
    var element = document.querySelector(dateInputSelector);
    element.value = dateText;
    
-   element = document.querySelector(dateInputLabel);
-   element.innerHTML = dateText;
+   dateInputLabelElement.innerHTML = dateText;
 
    element = document.querySelector(timeSelector)
    element.style.display = 'none';
@@ -69,7 +69,7 @@ function closeCalendarAction(div){
 
    var div = theAssessment.calendarDisplay.node;
    div.parentNode.style.display = 'none';
-}
+} // end of function closeCalendarAction
 
 
 function createCalendar(interact){
@@ -110,7 +110,7 @@ function createCalendar(interact){
    container.appendChild(calendar);
 
    return container;
-}
+} // end of function createCalendar
 
 function createMonth(){
    var theAssessment = new Assessment();
@@ -263,7 +263,7 @@ function closeSALDetailsAction(div){
    element.style.visibility = "visible";
    
    div.style.visibility = 'hidden';   
-}
+} // end of function closeSALDetailsAction
 
 function displaySALDetails(day){
    var div = SALDetails (day);
@@ -301,58 +301,50 @@ function SALDetails(day){
 
    //Add the data rows.
    var dayDetails = theAssessment.getCalendar()._dayDetails[day];
-   var busy = dayDetails.busyStudentList();
-   for (var id = 0; id < busy.length; id++) {
-      var studentID = busy[id];
-      var SALdetails  = dayDetails.getStudentDetails(studentID);
-      row = details.insertRow(-1);
-      row.classList = "isy-SAL-details-busy";
-      var cell = row.insertCell(-1);
-      cell.innerHTML = "<p>"+SALdetails.name+"</p>";
-      var cell = row.insertCell(-1);
-      cell.innerHTML = "<p>"+SALdetails.load+"</p>";
-      var cell = row.insertCell(-1);
-      if (SALdetails.details.length){
-         cell.innerHTML = "<p>";
-         for (var a = 0; a < SALdetails.details.length-1; a++){
-            var workLoadString = SALdetails.details[a].name;
-            cell.innerHTML += workLoadString+", ";
-         }
-         var workLoadString = SALdetails.details[SALdetails.details.length-1].name;
-         cell.innerHTML += workLoadString+"</p>";
+   if (dayDetails){
+      addStudentLoadRows(details, dayDetails, dayDetails.busyStudentList(), "isy-SAL-details-busy");
+      addStudentLoadRows(details, dayDetails, dayDetails.availableStudentList(), "isy-SAL-details-available");
+      addStudentLoadRows(details, dayDetails, dayDetails.freeStudentList(), "isy-SAL-details-free");
+   } else {
+      var list = [];
+      for (id in theAssessment.activeCourse.enrolledStudents){
+         list.push(id);
       }
-   }
-
-   var available = dayDetails.availableStudentList();
-   for (var id = 0; id < available.length; id++) {
-      var studentID = available[id];
-      var SALdetails  = dayDetails.getStudentDetails(studentID);
-      row = details.insertRow(-1);
-      row.classList = "isy-SAL-details-available";
-      var cell = row.insertCell(-1);
-      cell.innerHTML = "<p>"+SALdetails.name+"</p>";
-      var cell = row.insertCell(-1);
-      cell.innerHTML = "<p>"+SALdetails.load+"</p>";
-      var cell = row.insertCell(-1);
-      for (var a = 0; a < SALdetails.details.length; a++){
-         var workLoadString = SALdetails.details[a].name;
-         cell.innerHTML += "<p>"+workLoadString+"</p>";
-      }
-   }
-
-   var free = dayDetails.freeStudentList();
-   for (var id = 0; id < free.length; id++) {
-      var studentID = free[id];
-      var SALdetails  = dayDetails.getStudentDetails(studentID);
-      row = details.insertRow(-1);
-      row.classList = "isy-SAL-details-free";
-      var cell = row.insertCell(-1);
-      cell.innerHTML = "<p>"+SALdetails.name+"</p>";
-      var cell = row.insertCell(-1);
-      cell.innerHTML = "<p>"+SALdetails.load+"</p>";
-      var cell = row.insertCell(-1);
+      addStudentLoadRows(details, dayDetails, list, "isy-SAL-details-free");
    }
 
    container.appendChild(details);
    return container;
-}
+} // end of function SALDetails
+
+function addStudentLoadRows(htmlTable, dayDetails, list, classes){
+   for (var id = 0; id < list.length; id++) {
+      var studentID = list[id];
+      if (studentID in theAssessment.activeCourse.enrolledStudents){
+         if (dayDetails){
+            var SALdetails  = dayDetails.getStudentDetails(studentID);
+         } else {
+            var SALdetails  = {name: theAssessment.activeCourse.enrolledStudents[studentID].name,
+                               load: 0,
+                               details: []
+                              }
+         }
+         row = htmlTable.insertRow(-1);
+         row.classList = classes;
+         var cell = row.insertCell(-1);
+         cell.innerHTML = "<p>"+SALdetails.name+"</p>";
+         var cell = row.insertCell(-1);
+         cell.innerHTML = "<p>"+SALdetails.load+"</p>";
+         var cell = row.insertCell(-1);
+         if (SALdetails.details.length){
+            cell.innerHTML = "<p>";
+            for (var a = 0; a < SALdetails.details.length-1; a++){
+               var workLoadString = SALdetails.details[a].name;
+               cell.innerHTML += workLoadString+", ";
+            }
+            var workLoadString = SALdetails.details[SALdetails.details.length-1].name;
+            cell.innerHTML += workLoadString+"</p>";
+         }
+      }
+   }
+} // end of function addStudentLoadRows()
