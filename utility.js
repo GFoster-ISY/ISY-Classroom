@@ -1,18 +1,16 @@
 var dateSelector = "[aria-label='Due date & time']";
-var dateInputSelector = "[aria-label='Due date & time'] input";
-var dateInputLabel = "[aria-label='No due date'] div span";
-// Capture this element in extendDateSelector because Google dynamically changes the aria-label
-var dateInputLabelElement;
-var timeSelector = "[aria-label='Add due time']";
+
+var dateInputSelector = "[aria-label='Due date']";
+var timeLabelSelector = "[aria-label='Add due time']";
 var timeInputSelector = "[aria-label='Due time']";
+
 var datePopupSelector = "table[role=presentation]";
-var studentDetailsSelector = ".isy-studentDetails"
+var studentDetailsSelector = ".isy-studentDetails";
+var assessmentTitle = "[aria-label='Title']";
+// var assignmentWindow = "div[.='Assignment']"; // doesn't work in javascript :(
 
 function pollDOMExists (selector, success, callback, object = null){
     const el = document.querySelector(selector);
-    if (selector == datePopupSelector){
-      console.log(selector + " " + el + " " + success);
-    }
     if (el != null) {
        if (!success){
           if (object != null){
@@ -28,24 +26,35 @@ function pollDOMExists (selector, success, callback, object = null){
     setTimeout(pollDOMExists, 300, selector, success, callback, object);
  }
  
- function pollDOMShown (selector, success, callback){
-    const el = document.querySelector(selector);
-    var hidden = false;
-    if (el != null) {
-       const parent = el.parentNode
-       hidden =  window.getComputedStyle(parent).display === "none";
-    }
-    
-    if (hidden){
-       success = false;
-    } else {
-       if (!success){
-          callback(el);
-          success = true;
-       }
-    }
-    setTimeout(pollDOMShown, 300, selector, success, callback);
- }
+function pollDOMShown (selector, success, callback){
+   const el = document.querySelector(selector);
+   var hidden = false;
+   if (el != null) {
+      //const parent = el.parentNode
+      hidden =  window.getComputedStyle(el).display === "none";
+   }
+   
+   if (hidden){
+      success = false;
+   } else {
+      if (!success){
+         callback(el);
+         success = true;
+      }
+   }
+   setTimeout(pollDOMShown, 300, selector, success, callback);
+}
+
+function pollDOMDestroyed (callback){
+   if ([].slice.call(document.querySelectorAll("div")).filter(function (item){
+         return item.innerText.includes("Assignment");
+      }).length==0
+   ) {
+      callback();
+   } else {
+      setTimeout(pollDOMDestroyed, 300, callback);
+   }
+}
 
 function isEmpty(obj) {
    for(var key in obj) {
@@ -54,22 +63,6 @@ function isEmpty(obj) {
    }
    return true;
 }
-
-// var activeDay = null;
-// function getActiveDate(n){
-//     if (activeDay == null){
-//         activeDay = new Calendar(new Date()).addSchoolDays(n);
-//     }
-//     return activeDay;
-// }
-
-//function getCurrentMonth(){
-//     getActiveDate(2); // TODO get the 2 from a user defined parameter
-    
-//     var theAssessment = new Assessment();
-//     var activeDay = theAssessment.activeDay;
-//     return Calendar.months[activeDay.getMonth()];
-//  }
 
 function getCalendarKey(date){
     return date.getFullYear() * 100 + date.getMonth();

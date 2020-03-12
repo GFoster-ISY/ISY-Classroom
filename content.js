@@ -5,10 +5,6 @@
    
 
    function extendDateSelector(calendarTable){
-      console.log("In method extendDateSelector()");
-      // Capture this element here because Google dynamically changes the aria-label
-      dateInputLabelElement = document.querySelector(dateInputLabel);
-
       document.body.appendChild(theAssessment.SALDetailsDisplay.node);
       var element = document.querySelector(dateSelector);
       var title = element.childNodes[0];
@@ -25,7 +21,7 @@
       if (element != null){
          element.value = dateText;
       }
-      // TODO add a dialog box here if the student data hasn't yet been loaded
+      //TODO  add a dialog box here if the student data hasn't yet been loaded
       if (theAssessment.studentDataReceived){
          const activeCourse = theAssessment.setActiveCourse();
          const el = document.querySelector(studentDetailsSelector);

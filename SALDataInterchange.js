@@ -65,7 +65,7 @@ function storeStudentList(xhttp){
             var course =  theAssessment.getCourse(c);
             course.createStudentList(list[c]);
         }
-        this._studentDataReceived = true;
+        theAssessment._studentDataReceived = true;
         loadStudentWorkLoadList();
     }
 }
@@ -95,4 +95,16 @@ function storeStudentWorkLoad(xhttp){
         var calendar = theAssessment.getCalendar(month);
         calendar.storeStudentLoad(load);
     }
+}
+
+function newAssessment(){
+    var theAssessment = new Assessment();
+    var url  = this.URL + "new_assessment";
+    // get the active course ID
+    url += "&&course_id=" + theAssessment.activeCourse.id;
+    // get the selected date
+    url += "&&date=" + theAssessment.activeDay;
+    var xhttp = new XMLHttpRequest();
+    xhttp.open("POST", url, true);
+    xhttp.send();
 }

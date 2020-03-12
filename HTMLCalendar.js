@@ -46,31 +46,73 @@ function createDialog(title, iconClass, closeAction) {
    };
 } // end of function createDialog
 
-function closeCalendarAction(div){
-   console.log("In closeCalendarAction: " + div);
-   var theAssessment = new Assessment();
+function clearTitle(code){
+   element = document.querySelector(assessmentTitle);
+   var title = element.value;
+   if (title.startsWith(code)){
+      element.value = title.substr(code.length);
+   }
+}
 
-   
+function prependCodeToTitle(code, add){
+   element = document.querySelector(assessmentTitle);
+   var title = element.value;
+   if (add){
+      element.value = code + title;
+      // fire off google's script to store this value
+      element.dispatchEvent(new Event('input', { 'bubbles': true }))
+   }
+}
+
+function closeCalendarAction(div){
+   var theAssessment = new Assessment();
    var dateText = theAssessment.getCalendar().getDateText();
    
    var element = document.querySelector(dateInputSelector);
-   element.value = dateText;
-   
-   dateInputLabelElement.innerHTML = dateText;
+   element.value = dateText
+   // fire off google's script to store the date
+   element.dispatchEvent(new Event('blur', { 'bubbles': true }));
 
-   element = document.querySelector(timeSelector)
-   element.style.display = 'none';
-   
    element = document.querySelector(timeInputSelector);
    if (element.value == "11:59 PM"){
+      document.querySelector(timeLabelSelector).dispatchEvent(new Event('click', { 'bubbles': true }));
       element.value = "6:00 pm";
-      element.style.display = 'inline';
+      // fire off google's script to now store the time
+      element.dispatchEvent(new Event('blur', { 'bubbles': true }));
    }
+   
+
+   const sum = "SUM: ";
+   const hwrk = "HWRK: ";
+   clearTitle(sum);
+   clearTitle(hwrk);
+   var checkbox = document.getElementById("isySummative");
+   prependCodeToTitle(sum, checkbox.checked);
+   checkbox = document.getElementById("isyHomework");
+   prependCodeToTitle(hwrk, checkbox.checked);
+
 
    var div = theAssessment.calendarDisplay.node;
    div.parentNode.style.display = 'none';
+
+   // wait for the assessment widow to be closed
+   pollDOMDestroyed(assessmentWindowClosed);
 } // end of function closeCalendarAction
 
+
+function assessmentWindowClosed(){
+   console.log("In assessmentWindowClosed");
+   newAssessment();
+}
+
+function toggleCheckbox(event){
+   var elements = document.getElementsByClassName("isy-checkbox");
+   for(var i = 0; i < elements.length; i++) {
+      if (elements[i] != event.toElement){
+         elements[i].checked = false;
+      }
+   } 
+}
 
 function createCalendar(interact){
    theAssessment = new Assessment();
@@ -86,13 +128,32 @@ function createCalendar(interact){
       checkbox.value = "valueSummative"; 
       checkbox.id = "isySummative";
       checkbox.classList = "isy-checkbox";
+      checkbox.addEventListener("click", toggleCheckbox);
          
       // creating label for checkbox 
       var label = document.createElement('label');
       label.htmlFor = "isySummative";
       label.appendChild(document.createTextNode('Summative.')); 
       assessmentType.appendChild(checkbox); 
-      assessmentType.appendChild(label);   
+      assessmentType.appendChild(label);
+      container.appendChild(assessmentType);
+
+      assessmentType = document.createElement("div");
+      checkbox = document.createElement("input");
+      checkbox.type = "checkbox";
+      checkbox.name = "isyHomework";
+      checkbox.value = "valueHomework"; 
+      checkbox.id = "isyHomework";
+      checkbox.classList = "isy-checkbox";
+      checkbox.addEventListener("click", toggleCheckbox);
+         
+      // creating label for checkbox 
+      label = document.createElement('label');
+      label.htmlFor = "isyHomework";
+      label.appendChild(document.createTextNode('Homework.')); 
+      assessmentType.appendChild(checkbox); 
+      assessmentType.appendChild(label);
+      container.appendChild(assessmentType);
     }
 
    var studentSummary = document.createElement("div");
@@ -103,9 +164,6 @@ function createCalendar(interact){
 
    var calendar = createMonth();
 
-   if (interact){
-      container.appendChild(assessmentType);
-   }
    container.appendChild(studentSummary);
    container.appendChild(calendar);
 
@@ -253,7 +311,6 @@ function createDay(activeDay, year, month, day){
 } // end of function createDay()
 
 function closeSALDetailsAction(div){
-   console.log("In closeSALDetailsAction: " + div);
    var div = theAssessment.SALDetailsDisplay.node;
    var cdiv = theAssessment.calendarDisplay.node;
    cdiv.parentNode.style.display = 'block';
