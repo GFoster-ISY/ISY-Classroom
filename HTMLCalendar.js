@@ -62,6 +62,7 @@ function prependCodeToTitle(code, add){
       // fire off google's script to store this value
       element.dispatchEvent(new Event('input', { 'bubbles': true }))
    }
+   return element.value;
 }
 
 function closeCalendarAction(div){
@@ -89,8 +90,8 @@ function closeCalendarAction(div){
    var checkbox = document.getElementById("isySummative");
    prependCodeToTitle(sum, checkbox.checked);
    checkbox = document.getElementById("isyHomework");
-   prependCodeToTitle(hwrk, checkbox.checked);
-
+   const title = prependCodeToTitle(hwrk, checkbox.checked);
+   theAssessment.activeAssessmentTitle = title;
 
    var div = theAssessment.calendarDisplay.node;
    div.parentNode.style.display = 'none';
@@ -172,14 +173,8 @@ function createCalendar(interact){
 
 function createMonth(){
    var theAssessment = new Assessment();
-   var calendarViewDate;
-   // ***********
-   // WHY the if (calendar ==  null)
-   if (calendar == null){
-      calendarViewDate = theAssessment.getCalendar();
-   } else {
-      calendarViewDate = calendar;
-   }
+   var calendarViewDate = theAssessment.getCalendar();
+
    var yearText = calendarViewDate.year;
    var monthText = calendarViewDate.monthText;
    var monthData = calendarViewDate.calendarArray;

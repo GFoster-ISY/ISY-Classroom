@@ -17,6 +17,7 @@ class Assessment{
         this._calendar = {};
         this._activeCourses = {};
         this._activeCourse = null;
+        this._activeAssessmentTitle = null;
         this._SALDetailsDisplay = this.initSALDetailsDisplay(); // this will be set up in HTMLCalendar::displaySALDetails()
         this._calendarDisplay = {body: null, node: null}; // this will be set up in SALDataInterchange::storeSchoolDays()
         loadCourseList();
@@ -139,6 +140,14 @@ class Assessment{
         return this._activeCourse;
     }
 
+    get activeAssessmentTitle(){
+        return this._activeAssessmentTitle;
+    }
+
+    set activeAssessmentTitle(title){
+        this._activeAssessmentTitle = title;
+    }
+    
     saveSchoolDays(list){
         for (var id in list){
             this._schoolDays[id] = list[id];

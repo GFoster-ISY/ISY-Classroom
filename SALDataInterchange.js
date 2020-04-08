@@ -100,10 +100,15 @@ function storeStudentWorkLoad(xhttp){
 function newAssessment(){
     var theAssessment = new Assessment();
     var url  = this.URL + "new_assessment";
+    // TODO this needs to be repeated for each course that was selected
     // get the active course ID
     url += "&&course_id=" + theAssessment.activeCourse.id;
     // get the selected date
-    url += "&&date=" + theAssessment.activeDay;
+    url += "&&year=" + theAssessment.activeDay.getFullYear();
+    url += "&&month=" + (theAssessment.activeDay.getMonth() + 1);
+    url += "&&day=" + theAssessment.activeDay.getDate();
+    // get the title
+    url += "&&title=" + theAssessment.activeAssessmentTitle;
     var xhttp = new XMLHttpRequest();
     xhttp.open("POST", url, true);
     xhttp.send();
